@@ -676,7 +676,7 @@ def displaybysubcategory():
 @hasura_examples.route('/add_photo',methods=['GET','POST'])
 def addPhoto():
     if request.method == 'POST':
-        file = request.files['file']
+        file = os.getcwd(request.files['file'])
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
