@@ -1,0 +1,15 @@
+.Login_Signup_body{
+	margin :0;
+	background-color: #2a3990;
+	padding: 0;
+	
+}
+.logo{
+	margin: 0;
+	padding: 0;
+	height : 50%;
+	width: 100%;
+}
+.text{
+	color: white;
+}

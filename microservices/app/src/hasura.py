@@ -429,7 +429,7 @@ def allowed_file(filename):
 
 
 def getPhoto_url(file):
-    if file and allowed_file(file.filename):
+    if file and allowed_file(file.filename) and '_flashes' in session:
         filename = secure_filename(file.filename)
         file.save(os.path.join(os.getcwd(),filename))
         image=filename
@@ -437,7 +437,7 @@ def getPhoto_url(file):
         url = "https://filestore.banner20.hasura-app.io/v1/file"
         headers = {
                     "Content-Type": "image/png",
-                    "Authorization": 'Bearer  51b2c3ffea6317774d8e6434764c33d9aca233e835465e78' #+str(session['_flashes'][0][1]['auth_token'])
+                    "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token']) #+str(session['_flashes'][0][1]['auth_token'])
                     }
             # Open the file and make the query
         with open(filename, 'rb') as file_image:
@@ -486,6 +486,7 @@ def add_product():
         price = request.form['price']
         description = request.form['description']
         image = request.form['image']
+        print('\n getinfo',getinfo())
         hasura_id = getinfo()['hasura_id']
 
         # This is the url to which the query is made
@@ -517,7 +518,7 @@ def add_product():
 
         # resp.content contains the json response.
         if resp.json():
-            seller_id = resp.json()
+            seller_id = resp.json()['seller_id']
 
 
 
