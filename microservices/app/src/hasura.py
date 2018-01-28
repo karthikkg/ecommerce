@@ -683,16 +683,7 @@ def addPhoto():
             image=filename
             # This is the url to which the query is made
             url = "https://filestore.banner20.hasura-app.io/v1/file"
-            headers = {"file_id": "4bf52bda-8a0d-4372-861e-bfdbe1536ae0",
-                    "user_id": 1,
-                    "user_role": "admin",
-                    "content_type": "image/jpeg",
-                    "file_status": "uploaded",
-                    "created_at": "2018-01-27T04:54:22.945993721Z",
-                    "file_size": 28802
-
-            }
-
+            
             # Open the file and make the query
             with open(filename, 'rb') as file_image:
                 resp = requests.post(url, data=file_image.read(), headers=headers)
