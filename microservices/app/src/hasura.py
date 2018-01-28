@@ -676,10 +676,10 @@ def displaybysubcategory():
 @hasura_examples.route('/add_photo',methods=['GET','POST'])
 def addPhoto():
     if request.method == 'POST':
-        file = os.getcwd(request.files['file'])
+        file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+            file.save(os.path.join(os.getcwd(),filename))
             image=filename
             # This is the url to which the query is made
             url = "https://filestore.banner20.hasura-app.io/v1/file"
