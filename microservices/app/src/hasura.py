@@ -199,7 +199,7 @@ def signup():
             requestPayload = {
                             "provider": "username",
                             "data": {
-                                "username": first_name,
+                                "username": email,
                                 "password": password
                             }
                         }
