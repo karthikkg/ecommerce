@@ -68,7 +68,6 @@ def getinfo():
     else:
         return 'you are not logged in'
 
-
 @hasura_examples.route("/get_users")
 def get_users():
     query = {
@@ -451,8 +450,8 @@ def getPhoto_url(file):
 
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
-    user_info = getinfo().json()
-    #return user_info
+    user_info = getinfo()
+    return type(getinfo)
     if 'hasura_id' in user_info:
         hasura_id = user_info['hasura_id']
 
