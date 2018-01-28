@@ -64,7 +64,7 @@ def getinfo():
         resp = requests.request("GET", url, headers=headers)
 
         # resp.content contains the json response.
-        return resp.content
+        return resp
     else:
         return 'you are not logged in'
 
