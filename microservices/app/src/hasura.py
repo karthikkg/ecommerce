@@ -546,7 +546,7 @@ def add_product():
             }
 
             # Make the query and store response in resp
-            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
             # resp.content contains the json response.
             category_id = resp.json()['id']
@@ -571,7 +571,7 @@ def add_product():
             }
 
             # Make the query and store response in resp
-            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         else:
             return "you are not authorised to add"
     return render_template('addphoto.html')
