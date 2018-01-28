@@ -726,6 +726,26 @@ def home():
     # resp.content contains the json response.
     category_and_sub_category = resp.content.decode('utf-8')
 
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "complete_product_info",
+            "columns": [
+                "*"
+            ]
+        }
+    }
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+    # resp.content contains the json response.
+    all_product_info= resp.content.decode('utf-8')
     if '_flashes' in session:
         user_id= session['_flashes'][0][1]['hasura_id']
         # This is the json payload for the query
@@ -779,7 +799,7 @@ def home():
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         cart_count = resp.content.decode()
-        return (category_and_sub_category+'+\n'+username+'\n'+cart_count)
+        return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
     else:
-        return category_and_sub_category
+        return (category_and_sub_category+all_product_info)
     
