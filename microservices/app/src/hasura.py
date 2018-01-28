@@ -35,10 +35,10 @@ if CLUSTER_NAME is None:
 if PRODUCTION_ENV == "true":
     # set dataUrl as internal url if PRODUCTION_ENV is true
     # note that internal url has admin permissions
-    dataUrl = "https://data." + "collide60" + ".hasura-app.io/v1/query"
+    dataUrl = "https://data." + "banner20" + ".hasura-app.io/v1/query"
 else:
     # for local development, contact the cluster via external url
-    dataUrl = "https://data." + "collide60" + ".hasura-app.io/v1/query"
+    dataUrl = "https://data." + "banner20" + ".hasura-app.io/v1/query"
 
 hasura_examples = Blueprint('hasura_examples', __name__)
 
