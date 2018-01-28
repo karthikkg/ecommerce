@@ -5,10 +5,18 @@
         	<h1>{% block title%}Task 7{% endblock %}</h1>
         </header>
         <section>
-			<form action="/add_photo" method="post" enctype="multipart/form-data" >
-      <p><input type="file" name="file">
-         <input type="submit" value="Upload">
-    </form>
+			<form action="/addItem" method="POST" enctype="multipart/form-data">
+	Name: <input type="text" name="name"><br>
+	Price: <input type="text" name="price"><br>
+	Description: <textarea name="description" rows=3 cols="40"></textarea><br>
+	Image: <input type="file" name="image"><br>
+	Stock: <input type="text" name="stock"><br>
+	Category: <select name="category">
+		{% for row in categories %}
+			<option value="{{row[0]}}">{{row[1]}}</option>
+		{% endfor %}
+	</select><br>
+	<input type="submit">
 
 				</table>
 			</form>

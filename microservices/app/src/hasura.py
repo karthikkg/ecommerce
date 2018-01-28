@@ -98,50 +98,6 @@ class InputForm(Form):
     password = PasswordField('password',validators=[DataRequired()])
     #confirm = PasswordField('password2',validators=[DataRequired()])
 
-@hasura_examples.route('/input',methods=['GET','POST'])
-def inputf():
-    form = InputForm()
-    if form.validate_on_submit(): #if request.method == "POST":
-        print("\n\n\nprint \n entered form correctly\n \n")
-        first_name = form.first_name.data #request.form['first_name']
-        last_name = form.last_name.data #request.form['last_name']
-        email = form.email.data #request.form['email']
-        phone_number = form.phone_number.data #request.form['phone_number']
-        password = form.password.data #request.form['password']
-        print(first_name,last_name,email,phone_number,password)
-        app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
-
-        # This is the json payload for the query
-        requestPayload = {
-            "type": "insert",
-            "args": {
-                "table": "user",
-                "objects": [{"user_first_name": first_name,
-            "user_last_name": last_name,
-            "user_email_address": email,
-            "phone_number": phone_number,
-            "password": password}]
-            }
-        }
-
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
-
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-        data=resp.json()
-
-        # resp.content contains the json response.
-        print(resp.content)
-        #logging the input to stdout
-        #app.logger.debug('Submitted Successfully :-)\nName: '+name +'\nEmail : '+ email)
-        #print('Submitted Successfully :-)\nName: '+name +'\nEmail : '+ email)
-        #flash('Submitted Successfully :-) Name: '+name +' | Email : '+ email)
-        return jsonify(data=data)
-    return render_template('input.html',form = form)
-
 class signupForm(Form):
     """docstring for InputForm"""
     first_name = StringField('first_name', validators = [DataRequired()])
@@ -467,38 +423,72 @@ def logout():
     print(resp.content)
     return render_template('index.html')
 
-class add_productForm(Form):
-    """docstring for InputForm"""
-    product_name = StringField('product name', validators = [DataRequired()])
-    category = StringField('category', validators = [DataRequired()])
-    price = StringField('price', validators = [DataRequired()]) 
-    description = StringField('description', validators = [DataRequired()]) 
-    specifications = StringField('specifications',validators=[DataRequired(),EqualTo('password2','Passwords must match')])
-    image_0 = FileField('image_0')
-    image_1 = FileField('image_1')
-    image_2 = FileField('image_2')
-    image_3 = FileField('image_3')
-    image_4 = FileField('image_4')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def getPhoto_url(file):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(os.getcwd(),filename))
+        image=filename
+            # This is the url to which the query is made
+        url = "https://filestore.banner20.hasura-app.io/v1/file"
+        headers = {
+                    "Content-Type": "image/png",
+                    "Authorization": 'Bearer  51b2c3ffea6317774d8e6434764c33d9aca233e835465e78' #+str(session['_flashes'][0][1]['auth_token'])
+                    }
+            # Open the file and make the query
+        with open(filename, 'rb') as file_image:
+            resp = requests.post(url, data=file_image.read(), headers=headers)
+
+            # resp.content contains the json response.
+        print(resp.content)
+        return str(resp.json())
+    return 'no file'
+
 
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
-    form = add_productForm()
-    if form.validate_on_submit():
-        print("\n\n\nprint \n entered form correctly\n \n")
-        product_name = form.product_name.data
-        category = form.category.data
-        price = form.price.data
-        description = form.description.data
-        specifications = form.specifications.data
-        image_0 = form.image_0.data
-        image_1 = form.image_1.data
-        image_2 = form.image_2.data
-        image_3 = form.image_3.data
-        image_4 = form.image_4.data
-        hasura_id = getinfo()
+    user_info = getinfo()
+    if 'hasura_id' in user_info:
+        hasura_id = user_info['hasura_id']
+
+        requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "seller",
+            "columns": [
+                "id"
+            ],
+            "where": {
+                "hasura_id": {
+                    "$eq": hasura_id
+                }
+            }
+        }
+    }
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+    # resp.content contains the json response.
+    print(resp.content)
+    if request.method == "POST":
+        product_name = request.form['product_name']
+        category = request.form['category']
+        price = request.form['price']
+        description = request.form['description']
+        image = request.form['image']
+        hasura_id = getinfo()['hasura_id']
 
         # This is the url to which the query is made
-        imagesList = [image_0, image_1, image_2, image_3, image_4]
         
 
         # This is the json payload for the query
@@ -526,87 +516,68 @@ def add_product():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        seller_id=resp.json()['id']
+        if resp.json():
+            seller_id = resp.json()
+
 
 
     
-        # This is the url to which the query is made
-        # This is the json payload for the query
-        requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "category",
-                "columns": [
-                    "id"
-                ],
-                "where": {
-                    "name": {
-                        "$eq": ""
+            # This is the url to which the query is made
+            # This is the json payload for the query
+            requestPayload = {
+                "type": "select",
+                "args": {
+                    "table": "category",
+                    "columns": [
+                        "id"
+                    ],
+                    "where": {
+                        "name": {
+                            "$eq": ""
+                        }
                     }
                 }
             }
-        }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
-
-        # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-
-        # resp.content contains the json response.
-        category_id = resp.json()['id']
-
-        # This is the json payload for the query
-        requestPayload = {
-            "type": "insert",
-            "args": {
-                "table": "product",
-                "objects": [{"product_name": product_name,
-                                                "price": price,
-                                                "category_id": category_id,
-                                                "description": description,
-                                                "specifications": specifications, "seller_id": seller_id,
-                                                "product_url": url_for('/',filename='product/'+product_name)}]
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
             }
-        }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
+            # Make the query and store response in resp
+            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
 
-        # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+            # resp.content contains the json response.
+            category_id = resp.json()['id']
 
-        for image in imagesList:
-            if image:
-                import requests
+            # This is the json payload for the query
+            requestPayload = {
+                "type": "insert",
+                "args": {
+                    "table": "product",
+                    "objects": [{"product_name": product_name,
+                                                    "price": price,
+                                                    "category_id": category_id,
+                                                    "description": description,
+                                                    "specifications": specifications, "seller_id": seller_id,
+                                                    "product_url": url_for('/',filename='product/'+product_name)}]
+                }
+            }
 
-                # This is the url to which the query is made
-                fileurl = "https://filestore.banner20.hasura-app.io/v1/file"
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
 
-                # Setting headers
-                headers = {}
+            # Make the query and store response in resp
+            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        else:
+            return "you are not authorised to add"
+    return render_template('addphoto.html')
+        
 
-                # Open the file and make the query
-                with open('test.png', 'rb') as file_image:
-                    resp = requests.post(fileurl, data=file_image.read(), headers=headers)
 
-                # resp.content contains the json response.
-                print(resp.content)
 
-        # resp.content contains the json response.
-        print(resp.content)
-
-class addphotoForm(Form):
-    """docstring for InputForm"""
-    image_0 = FileField('image_0')
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
@@ -673,28 +644,8 @@ def displaybysubcategory():
         return resp.content
         
 
-@hasura_examples.route('/add_photo',methods=['GET','POST'])
-def addPhoto():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(os.getcwd(),filename))
-            image=filename
-            # This is the url to which the query is made
-            url = "https://filestore.banner20.hasura-app.io/v1/file"
-            headers = {
-                    "Content-Type": "image/png",
-                    "Authorization": 'Bearer  51b2c3ffea6317774d8e6434764c33d9aca233e835465e78' #+str(session['_flashes'][0][1]['auth_token'])
-                    }
-            # Open the file and make the query
-            with open(filename, 'rb') as file_image:
-                resp = requests.post(url, data=file_image.read(), headers=headers)
 
-            # resp.content contains the json response.
-            print(resp.content)
-            return str(resp.json())
-    return render_template('addphoto.html')
+
 @hasura_examples.route('/')
 def home():
     # This is the json payload for the query
