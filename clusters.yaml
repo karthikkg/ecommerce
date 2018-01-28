@@ -1,0 +1,7 @@
+- alias: hasura
+  config:
+    configmap: controller-conf
+    namespace: banner20-hasura
+  data: null
+  kubeContext: banner20
+  name: banner20
