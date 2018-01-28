@@ -685,7 +685,7 @@ def addPhoto():
             url = "https://filestore.banner20.hasura-app.io/v1/file"
             headers = {
                     "Content-Type": "image/png",
-                    "Authorization": "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
+                    "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
                     }
             # Open the file and make the query
             with open(filename, 'rb') as file_image:
