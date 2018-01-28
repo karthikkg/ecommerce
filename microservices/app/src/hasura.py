@@ -622,7 +622,7 @@ def product_info():
                     "*"
                 ],
                 "where": {
-                    "id": {
+                    "product_id": {
                         "$eq": product_id
                     }
                 }
