@@ -451,7 +451,7 @@ def getPhoto_url(file):
 
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
-    user_info = literal_eval(getinfo().decode('utf8'))
+    user_info = literal_eval(getinfo().content.decode('utf8'))
     return user_info
     if 'hasura_id' in user_info:
         hasura_id = user_info['hasura_id']
