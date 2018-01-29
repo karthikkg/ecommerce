@@ -509,7 +509,7 @@ def add_product():
                     "id"
                 ],
                 "where": {
-                    "name": {
+                    "id": {
                         "$eq": category
                     }
                 }
