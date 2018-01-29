@@ -612,7 +612,7 @@ def add_product():
 
         #else:
          #   return "you are not authorised to add"
-    return render_template(url_for('/add_product'))
+    return render_template('addphoto.html')
 
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
