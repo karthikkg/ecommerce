@@ -486,6 +486,7 @@ def add_product():
         json_obj = json.loads(string)
         print(json_obj)
         seller_id = json_obj[0]['id']
+        #print("type(seller_id):\n",type(seller_id))
         print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
@@ -508,7 +509,7 @@ def add_product():
                 ],
                 "where": {
                     "name": {
-                        "$eq": seller_id
+                        "$eq": category
                     }
                 }
             }
