@@ -489,7 +489,7 @@ def add_product():
         print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
-        if 'id' in resp :
+        if 'seller_id' in resp :
             print('enetered post\n')
             product_name = request.form['product_name']
             category = request.form['category']
