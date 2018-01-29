@@ -428,7 +428,9 @@ def allowed_file(filename):
 
 
 def getPhoto_url(file):
+    print('entered getPhoto_url function\n')
     if file and allowed_file(file.filename) and '_flashes' in session:
+        print('valid file extension\n')
         filename = secure_filename(file.filename)
         file.save(os.path.join(os.getcwd(),filename))
         image=filename
@@ -451,11 +453,13 @@ def getPhoto_url(file):
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
     user_info = getinfo()
-    print('entered add product ')
+    print('entered add product \n',getinfo())
     print("the return type getinfo() is", type(getinfo()))
     #return type(getinfo)
     if 'hasura_id' in user_info:
+        print(hasura_id)
         hasura_id = user_info['hasura_id']
+        print('entered first if\n',hasura_id)
 
         requestPayload = {
             "type": "select",
@@ -479,10 +483,13 @@ def add_product():
 
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+        print('resp of select seller id query\n',resp )
         seller_id = resp["id"]
+        print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
         if request.method == "POST" and 'id' in resp :
+            print('enetered post\n')
             product_name = request.form['product_name']
             category = request.form['category']
             price = request.form['price']
@@ -513,9 +520,10 @@ def add_product():
 
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
+            print('resp of category id query\n',resp )
             # resp.content contains the json response.
-            category_id = resp.json()['id']
+            category_id = resp['id']
+            print('category_id :\n',category_id)
             image_url = getPhoto_url(image)
 
             # This is the json payload for the query
@@ -542,8 +550,10 @@ def add_product():
 
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+            print('resp of insert product query\n',resp )
+
             product_id = resp["id"]
-            
+            print('product_id: \n',product_id)
             #
             requestPayload = {
                 "type": "insert",
@@ -563,6 +573,7 @@ def add_product():
 
             # Make the query and store response in resp
             resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+            print('resp of insert image query\n',resp )
 
             # resp.content contains the json response.
             print(resp.content)
