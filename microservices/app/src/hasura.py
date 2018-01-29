@@ -603,12 +603,12 @@ def add_product():
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         print('resp of insert image query\n',resp )
 
         # resp.content contains the json response.
         print(resp.content)
-        return render_template('addphoto.html')
+        return render_template(url_for('/add_product'))
 
         #else:
          #   return "you are not authorised to add"
