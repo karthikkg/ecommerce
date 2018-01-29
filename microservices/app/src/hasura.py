@@ -628,7 +628,7 @@ def displaybysubcategory():
                     "*"
                 ],
                 "where": {
-                    "seller_id": {
+                    "sub_category_id": {
                         "$eq": subcategory_id
                     }
                 }
