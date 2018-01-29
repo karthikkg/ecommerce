@@ -451,7 +451,9 @@ def getPhoto_url(file):
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
     user_info = getinfo()
-    return type(getinfo)
+    print('entered add product ')
+    print("the return type getinfo() is", trype(getinfo()))
+    #return type(getinfo)
     if 'hasura_id' in user_info:
         hasura_id = user_info['hasura_id']
 
