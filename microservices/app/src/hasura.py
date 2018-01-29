@@ -525,6 +525,7 @@ def add_product():
         # resp.content contains the json response.
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
+        print('json_obj\n',json_obj )
         category_id = json_obj[0]['id']
         print('category_id\n',category_id )
         #category_id = resp.json()
