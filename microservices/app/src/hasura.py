@@ -489,106 +489,106 @@ def add_product():
         print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
-        if 'seller_id' in resp :
-            print('enetered post\n')
-            product_name = request.form['product_name']
-            category = request.form['category']
-            price = request.form['price']
-            description = request.form['description']
-            image = request.form['image']
-        
-            # This is the url to which the query is made
-            # This is the json payload for the query
-            requestPayload = {
-                "type": "select",
-                "args": {
-                    "table": "category",
-                    "columns": [
-                        "id"
-                    ],
-                    "where": {
-                        "name": {
-                            "$eq": seller_id
-                        }
+        #if 'seller_id' in resp :
+        print('enetered post\n')
+        product_name = request.form['product_name']
+        category = request.form['category']
+        price = request.form['price']
+        description = request.form['description']
+        image = request.form['image']
+    
+        # This is the url to which the query is made
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "category",
+                "columns": [
+                    "id"
+                ],
+                "where": {
+                    "name": {
+                        "$eq": seller_id
                     }
                 }
             }
+        }
 
-            # Setting headers
-            headers = {
-                "Content-Type": "application/json"
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+        print('resp of category id query\n',resp )
+        # resp.content contains the json response.
+        string = resp.content.decode('utf-8')
+        json_obj = json.loads(string)
+        category_id = json_obj[0]['id']
+        print('category_id\n',category_id )
+        #category_id = resp.json()
+        #print('category_id :\n',category_id)
+        image_url = getPhoto_url(image)
+
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "insert",
+            "args": {
+                "table": "product",
+                "objects": [{"product_name": product_name,
+                                                "price": price,
+                                                "category_id": category_id,
+                                                "description": description,
+                                                "specifications": specifications, "seller_id": seller_id,
+                                                "product_url": url_for('/',filename='product/'+product_name)}],
+            "returning": ["id"]
+
+
             }
+        }
 
-            # Make the query and store response in resp
-            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-            print('resp of category id query\n',resp )
-            # resp.content contains the json response.
-            string = resp.content.decode('utf-8')
-            json_obj = json.loads(string)
-            category_id = json_obj[0]['id']
-            print('category_id\n',category_id )
-            #category_id = resp.json()
-            #print('category_id :\n',category_id)
-            image_url = getPhoto_url(image)
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-            # This is the json payload for the query
-            requestPayload = {
-                "type": "insert",
-                "args": {
-                    "table": "product",
-                    "objects": [{"product_name": product_name,
-                                                    "price": price,
-                                                    "category_id": category_id,
-                                                    "description": description,
-                                                    "specifications": specifications, "seller_id": seller_id,
-                                                    "product_url": url_for('/',filename='product/'+product_name)}],
-                "returning": ["id"]
-    
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+        print('resp of insert product query\n',resp )
+        string = resp.content.decode('utf-8')
+        json_obj = json.loads(string)
+        seller_id = json_obj[0]['id']
 
-                }
+        #product_id = resp.json()
+        #print('product_id: \n',product_id)
+        #
+        requestPayload = {
+            "type": "insert",
+            "args": {
+                "table": "product_image",
+                "objects": [{"url ": image_url,
+                            "product_id": product_id,
+                            "seller_id": seller_id,
+                            }]
             }
+        }
 
-            # Setting headers
-            headers = {
-                "Content-Type": "application/json"
-            }
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-            # Make the query and store response in resp
-            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-            print('resp of insert product query\n',resp )
-            string = resp.content.decode('utf-8')
-            json_obj = json.loads(string)
-            seller_id = json_obj[0]['id']
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        print('resp of insert image query\n',resp )
 
-            #product_id = resp.json()
-            #print('product_id: \n',product_id)
-            #
-            requestPayload = {
-                "type": "insert",
-                "args": {
-                    "table": "product_image",
-                    "objects": [{"url ": image_url,
-                                "product_id": product_id,
-                                "seller_id": seller_id,
-                                }]
-                }
-            }
+        # resp.content contains the json response.
+        print(resp.content)
+        return render_template('addphoto.html')
 
-            # Setting headers
-            headers = {
-                "Content-Type": "application/json"
-            }
-
-            # Make the query and store response in resp
-            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-            print('resp of insert image query\n',resp )
-
-            # resp.content contains the json response.
-            print(resp.content)
-            return render_template('addphoto.html')
-
-        else:
-            return "you are not authorised to add"
+        #else:
+         #   return "you are not authorised to add"
     return render_template('addphoto.html')
 
 # Display product info by product id
