@@ -456,9 +456,11 @@ def add_product():
     print('entered add product \n',getinfo())
     print("the return type getinfo() is", type(getinfo()))
     #return type(getinfo)
-    if 'hasura_id' in user_info:
+    if '_flashes' in session:
+        hasura_id= session['_flashes'][0][1]['hasura_id']
+    #if 'hasura_id' in user_info:
         print(hasura_id)
-        hasura_id = user_info['hasura_id']
+        #hasura_id = user_info['hasura_id']
         print('entered first if\n',hasura_id)
 
         requestPayload = {
