@@ -486,7 +486,7 @@ def add_product():
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         print('resp of select seller id query\n',resp )
-        seller_id string = response.read().decode('utf-8')
+        string = response.read().decode('utf-8')
         json_obj = json.loads(string)
         seller_id = json_obj['seller_id']
         print('seller id\n',seller_id )
