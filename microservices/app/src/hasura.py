@@ -488,6 +488,7 @@ def add_product():
         print('resp of select seller id query\n',resp )
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
+        print(json_obj)
         seller_id = json_obj['seller_id']
         print('seller id\n',seller_id )
         # resp.content contains the json response.
