@@ -564,7 +564,7 @@ def add_product():
                                                 "category_id": category_id,
                                                 "description": description,
                                                 "seller_id": seller_id,
-                                                "product_url": url_for('/',filename='product/'+product_name)}],
+                                                }],
             "returning": ["id"]
 
 
