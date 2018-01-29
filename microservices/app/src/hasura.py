@@ -456,7 +456,7 @@ def add_product():
     print('entered add product \n',getinfo())
     print("the return type getinfo() is", type(getinfo()))
     #return type(getinfo)
-    if '_flashes' in session:
+    if request.method == "POST" and '_flashes' in session:
         hasura_id= session['_flashes'][0][1]['hasura_id']
     #if 'hasura_id' in user_info:
         print(hasura_id)
@@ -489,11 +489,11 @@ def add_product():
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
         print(json_obj)
-        seller_id = json_obj[0][0]['seller_id']
+        seller_id = json_obj[0]['seller_id']
         print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
-        if request.method == "POST" and 'id' in resp :
+        if 'id' in resp :
             print('enetered post\n')
             product_name = request.form['product_name']
             category = request.form['category']
@@ -589,6 +589,7 @@ def add_product():
 
             # resp.content contains the json response.
             print(resp.content)
+            return render_template('addphoto.html')
 
         else:
             return "you are not authorised to add"
