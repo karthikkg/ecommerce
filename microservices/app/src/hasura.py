@@ -486,7 +486,7 @@ def add_product():
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         print('resp of select seller id query\n',resp )
-        string = resp.read().decode('utf-8')
+        string = resp.decode('utf-8')
         json_obj = json.loads(string)
         seller_id = json_obj['seller_id']
         print('seller id\n',seller_id )
@@ -526,7 +526,7 @@ def add_product():
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
             print('resp of category id query\n',resp )
             # resp.content contains the json response.
-            string = resp.read().decode('utf-8')
+            string = resp.decode('utf-8')
             json_obj = json.loads(string)
             seller_id = json_obj['category_id']
             print('category_id\n',category_id )
@@ -559,7 +559,7 @@ def add_product():
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
             print('resp of insert product query\n',resp )
-            string = resp.read().decode('utf-8')
+            string = resp.decode('utf-8')
             json_obj = json.loads(string)
             seller_id = json_obj['product_id']
 
