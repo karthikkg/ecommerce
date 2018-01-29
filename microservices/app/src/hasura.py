@@ -601,7 +601,36 @@ def product_info():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        return resp.content
+        product_information = resp.content
+
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "product_image",
+                "columns": [
+                    "url"
+                ],
+                "where": {
+                    "product_id": {
+                        "$eq": product_id
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        images = resp.content
+
+        return (product_information,images)
 
 # Display products by sub category id
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
