@@ -452,7 +452,7 @@ def getPhoto_url(file):
 def add_product():
     user_info = getinfo()
     print('entered add product ')
-    print("the return type getinfo() is", trype(getinfo()))
+    print("the return type getinfo() is", type(getinfo()))
     #return type(getinfo)
     if 'hasura_id' in user_info:
         hasura_id = user_info['hasura_id']
