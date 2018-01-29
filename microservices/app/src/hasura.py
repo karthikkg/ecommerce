@@ -452,8 +452,8 @@ def getPhoto_url(file):
 
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
-    if request.method == "POST" and '_flashes' in session:
-        hasura_id= session['_flashes'][0][1]['hasura_id']
+    if request.method == "POST" :#and '_flashes' in session:
+        hasura_id= 6#session['_flashes'][0][1]['hasura_id']
     #if 'hasura_id' in user_info:
         print(hasura_id)
         #hasura_id = user_info['hasura_id']
