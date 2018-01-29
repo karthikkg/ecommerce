@@ -485,7 +485,7 @@ def add_product():
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
         print(json_obj)
-        seller_id = json_obj[0]['seller_id']
+        seller_id = json_obj[0]['id']
         print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
@@ -525,7 +525,7 @@ def add_product():
             # resp.content contains the json response.
             string = resp.content.decode('utf-8')
             json_obj = json.loads(string)
-            category_id = json_obj[0]['category_id']
+            category_id = json_obj[0]['id']
             print('category_id\n',category_id )
             #category_id = resp.json()
             #print('category_id :\n',category_id)
@@ -558,7 +558,7 @@ def add_product():
             print('resp of insert product query\n',resp )
             string = resp.content.decode('utf-8')
             json_obj = json.loads(string)
-            seller_id = json_obj[0]['product_id']
+            seller_id = json_obj[0]['id']
 
             #product_id = resp.json()
             #print('product_id: \n',product_id)
