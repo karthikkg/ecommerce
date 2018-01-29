@@ -497,7 +497,7 @@ def add_product():
         print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
-        image = request.form['image']
+        file = request.form['image']
     
         # This is the url to which the query is made
         # This is the json payload for the query
@@ -532,7 +532,27 @@ def add_product():
         print('category_id\n',category_id )
         #category_id = resp.json()
         #print('category_id :\n',category_id)
-        image_url = getPhoto_url(image)
+        #image_url = getPhoto_url(image)
+        if file and allowed_file(file.filename) and '_flashes' in session:
+            print('valid file extension\n')
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.getcwd(),filename))
+            image=filename
+                # This is the url to which the query is made
+            url = "https://filestore.banner20.hasura-app.io/v1/file"
+            headers = {
+                        "Content-Type": "image/png",
+                        "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token']) #+str(session['_flashes'][0][1]['auth_token'])
+                        }
+                # Open the file and make the query
+            with open(filename, 'rb') as file_image:
+                resp = requests.post(url, data=file_image.read(), headers=headers)
+
+                # resp.content contains the json response.
+            print(resp.content)
+            image_url = resp.content
+            #return url + '/'+ str(resp.content.decode())
+        #return False
 
         # This is the json payload for the query
         requestPayload = {
