@@ -486,7 +486,9 @@ def add_product():
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         print('resp of select seller id query\n',resp )
-        seller_id = resp.json()
+        seller_id string = response.read().decode('utf-8')
+        json_obj = json.loads(string)
+        seller_id = json_obj['seller_id']
         print('seller id\n',seller_id )
         # resp.content contains the json response.
         print(resp.content)
@@ -509,7 +511,7 @@ def add_product():
                     ],
                     "where": {
                         "name": {
-                            "$eq": ""
+                            "$eq": seller_id
                         }
                     }
                 }
@@ -524,8 +526,12 @@ def add_product():
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
             print('resp of category id query\n',resp )
             # resp.content contains the json response.
-            category_id = resp.json()
-            print('category_id :\n',category_id)
+            string = response.read().decode('utf-8')
+            json_obj = json.loads(string)
+            seller_id = json_obj['category_id']
+            print('category_id\n',category_id )
+            #category_id = resp.json()
+            #print('category_id :\n',category_id)
             image_url = getPhoto_url(image)
 
             # This is the json payload for the query
@@ -553,9 +559,12 @@ def add_product():
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
             print('resp of insert product query\n',resp )
+            string = response.read().decode('utf-8')
+            json_obj = json.loads(string)
+            seller_id = json_obj['product_id']
 
-            product_id = resp.json()
-            print('product_id: \n',product_id)
+            #product_id = resp.json()
+            #print('product_id: \n',product_id)
             #
             requestPayload = {
                 "type": "insert",
