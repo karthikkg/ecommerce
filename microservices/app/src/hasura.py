@@ -494,6 +494,7 @@ def add_product():
         print('enetered post\n')
         product_name = request.form['product_name']
         category = request.form['category']
+        print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
         image = request.form['image']
@@ -503,7 +504,7 @@ def add_product():
         requestPayload = {
             "type": "select",
             "args": {
-                "table": "category",
+                "table": "sub_category",
                 "columns": [
                     "id"
                 ],
