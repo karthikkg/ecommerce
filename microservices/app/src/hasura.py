@@ -539,7 +539,7 @@ def add_product():
             json_obj = json.loads(string)
             print(json_obj)
             imageurl = json_obj['file_id']
-            image_url = url+imageurl
+            image_url = url+'/'+imageurl
             print(image_url)
 
 
@@ -586,7 +586,7 @@ def add_product():
         print('resp of insert product query\n',resp )
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
-        product_id = json_obj[0]['id']
+        product_id = json_obj['returning'][0]['id']
 
         #product_id = resp.json()
         #print('product_id: \n',product_id)
