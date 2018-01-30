@@ -79,7 +79,7 @@ def getinfo():
         resp = requests.request("GET", url, headers=headers)
 
         # resp.content contains the json response.
-        return resp
+        return resp.content
 
     else:
         return 'you are not logged in'
