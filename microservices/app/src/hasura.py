@@ -572,7 +572,7 @@ def add_product():
             "type": "insert",
             "args": {
                 "table": "product",
-                "objects": [{"product_name": product_name,
+                "objects": [{"name": product_name,
                                                 "price": price,
                                                 "sub_category_id": category_id,
                                                 "description": description,
