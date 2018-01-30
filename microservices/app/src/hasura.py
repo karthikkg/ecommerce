@@ -547,7 +547,7 @@ def add_product():
             print('valid file extension\n')
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.getcwd(),filename))
-            image=filename
+            file=filename
                 # This is the url to which the query is made
             url = "https://filestore.banner20.hasura-app.io/v1/file"
             headers = {
@@ -555,7 +555,7 @@ def add_product():
                         "Authorization": 'Bearer ' + auth_token #+str(session['auth_token'])
                         }
                 # Open the file and make the query
-            with open(image, 'rb') as file_image:
+            with open(file, 'rb') as file_image:
                 resp = requests.post(url, data=file_image.read(), headers=headers)
 
                 # resp.content contains the json response.
@@ -827,7 +827,7 @@ def addPhoto():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+            file.save(os.path.join(os.getcwd(),filename))
             image=filename
             # This is the url to which the query is made
             url = "https://filestore.equation37.hasura-app.io/v1/file"
