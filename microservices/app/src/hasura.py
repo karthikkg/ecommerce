@@ -595,7 +595,7 @@ def add_product():
             "type": "insert",
             "args": {
                 "table": "product_image",
-                "objects": [{"url ": image_url,
+                "objects": [{"url": image_url,
                             "product_id": product_id,
                             "seller_id": seller_id,
                             }]
