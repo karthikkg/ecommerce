@@ -503,7 +503,7 @@ def add_product():
         #if 'seller_id' in resp :
         print('enetered post\n')
         product_name = request.form['product_name']
-        sub_category = int(request.form['category'])
+        sub_category = request.form['category']
         #print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
