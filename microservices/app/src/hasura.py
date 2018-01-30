@@ -503,7 +503,7 @@ def add_product():
         #if 'seller_id' in resp :
         print('enetered post\n')
         product_name = request.form['product_name']
-        sub_category = request.form['category']
+        sub_category = int(request.form['category'])
         #print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
@@ -539,7 +539,7 @@ def add_product():
             json_obj = json.loads(string)
             print(json_obj)
             imageurl = json_obj['file_id']
-            image_url = imageurl + resp.content.decode('utf8')
+            image_url = url+imageurl
             print(image_url)
 
 
