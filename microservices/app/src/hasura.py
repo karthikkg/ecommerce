@@ -613,7 +613,8 @@ def add_product():
 
         # resp.content contains the json response.
         print(resp.content)
-        return render_template(url_for('/add_product'))
+        flash('Successfully added product\n'+'product_id: '+product_id+'\nimage_url: '+image_url)
+        return render_template('addphoto.html')
 
         #else:
          #   return "you are not authorised to add"
