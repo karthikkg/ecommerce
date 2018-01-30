@@ -195,7 +195,7 @@ def signup():
 
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
+            return resp
             # resp.content contains the json response.
             print(resp.content)
     return render_template('signup.html',form = form)
