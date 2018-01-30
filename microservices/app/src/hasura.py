@@ -412,15 +412,16 @@ def login():
 
         # Make the query and store response in resp
         resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-        resp = make_response(render_template('index.html'))
+        response = make_response(render_template('index.html'))
 
-
-       
+        s = requests.Session()
+        s.get(resp)
+        print(s.cookies)
 
         # resp.content contains the json response.
-        #print(resp.content)
-        #flash(resp.json())
-        return resp
+        print(resp.content)
+        flash(resp.json())
+        return response
     return render_template('login.html',form=form)
 
 
