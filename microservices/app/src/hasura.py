@@ -823,7 +823,7 @@ def addPhoto():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image=filename
             print('the full path of image is\n',image)
             # This is the url to which the query is made
