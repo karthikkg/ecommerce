@@ -416,9 +416,9 @@ def login():
        
 
         # resp.content contains the json response.
-        #print(resp.content)
-        #flash(resp.json())
-        return render_template('login.html',form=form)
+        print(resp.content)
+        flash(resp.json())
+        return resp.content
     return render_template('login.html',form=form)
 
 
