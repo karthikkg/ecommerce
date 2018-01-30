@@ -412,7 +412,7 @@ def login():
 
         # Make the query and store response in resp
         resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-        response = make_response(render_template(url_for('/add_product')))
+        response = make_response(render_template(url_for('addphoto.html')))
        
 
         # resp.content contains the json response.
