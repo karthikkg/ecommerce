@@ -538,9 +538,11 @@ def add_product():
             string = resp.content.decode('utf-8')
             json_obj = json.loads(string)
             print(json_obj)
-            imageurl = json_obj[0]['file_id']
+            imageurl = json_obj['file_id']
             image_url = imageurl + resp.content.decode('utf8')
             print(image_url)
+
+
             #return url + '/'+ str(resp.content.decode())
         #return False
 
