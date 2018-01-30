@@ -574,7 +574,7 @@ def add_product():
                 "table": "product",
                 "objects": [{"product_name": product_name,
                                                 "price": price,
-                                                "category_id": category_id,
+                                                "sub_category_id": category_id,
                                                 "description": description,
                                                 "seller_id": seller_id,
                                                 }],
