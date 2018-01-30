@@ -543,11 +543,13 @@ def add_product():
         #category_id = resp.json()
         #print('category_id :\n',category_id)
         #image_url = getPhoto_url(image)
+        print(file)
         if file and allowed_file(file.filename): #and 'auth_token' in session:
             print('valid file extension\n')
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.getcwd(),filename))
             file=filename
+            print(file)
                 # This is the url to which the query is made
             url = "https://filestore.banner20.hasura-app.io/v1/file"
             headers = {
