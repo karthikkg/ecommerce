@@ -48,7 +48,7 @@ app.config['DEBUG'] = True
 toolbar = DebugToolbarExtension(app)
 @hasura_examples.route('/getinfo')
 def getinfo():
-    if '_flashes' in session:
+    if 'auth_token' in session:
         print('entered _flashes')
 
     # This is the url to which the query is made
@@ -58,7 +58,7 @@ def getinfo():
         # Setting headers
         headers = {
             "Content-Type": "application/json",
-            "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
+            "Authorization": 'Bearer ' +str(session['auth_token'])
         }
 
         # Make the query and store response in resp
@@ -66,23 +66,6 @@ def getinfo():
 
         # resp.content contains the json response.
         return resp.content
-    elif 'session' in session:
-        print('entered session')
-        url = "https://auth.banner20.hasura-app.io/v1/user/info"
-
-        # This is the json payload for the query
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json",
-            "session": session['session']
-        }
-
-        # Make the query and store response in resp
-        resp = requests.request("GET", url, headers=headers)
-
-        # resp.content contains the json response.
-        return resp.content
-
     else:
         return 'you are not logged in'
 
@@ -457,7 +440,7 @@ def allowed_file(filename):
 
 def getPhoto_url(file):
     print('entered getPhoto_url function\n')
-    if file and allowed_file(file.filename) and '_flashes' in session:
+    if file and allowed_file(file.filename) and 'auth_token' in session:
         print('valid file extension\n')
         filename = secure_filename(file.filename)
         file.save(os.path.join(os.getcwd(),filename))
@@ -466,7 +449,7 @@ def getPhoto_url(file):
         url = "https://filestore.banner20.hasura-app.io/v1/file"
         headers = {
                     "Content-Type": "image/png",
-                    "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token']) #+str(session['_flashes'][0][1]['auth_token'])
+                    "Authorization": 'Bearer ' +str(session['auth_token']) #+str(session['auth_token'])
                     }
             # Open the file and make the query
         with open(filename, 'rb') as file_image:
@@ -480,17 +463,10 @@ def getPhoto_url(file):
 
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
-    if request.method == "POST" and '_flashes' in session:
-        #string = getinfo().decode('utf-8')
-        #json_obj = json.loads(string)
-        #print(json_obj)
-        #hasura_id = json_obj['hasura_id']
-        auth_token=session['_flashes'][0][1]['hasura_id']
-        #auth_token = json_obj['auth_token']
-        hasura_id= session['_flashes'][0][1]['hasura_id']
-    #if 'hasura_id' in user_info:
+    if request.method == "POST" and 'auth_token' in session:
+        auth_token=session['auth_token']
+        hasura_id= session['hasura_id']
         print(hasura_id)
-        #hasura_id = user_info['hasura_id']
         print('entered first if\n',hasura_id)
 
         requestPayload = {
@@ -567,7 +543,7 @@ def add_product():
         #category_id = resp.json()
         #print('category_id :\n',category_id)
         #image_url = getPhoto_url(image)
-        if file and allowed_file(file.filename) and '_flashes' in session:
+        if file and allowed_file(file.filename): #and 'auth_token' in session:
             print('valid file extension\n')
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.getcwd(),filename))
@@ -576,7 +552,7 @@ def add_product():
             url = "https://filestore.banner20.hasura-app.io/v1/file"
             headers = {
                         "Content-Type": "image/png",
-                        "Authorization": 'Bearer ' +auth_token #+str(session['_flashes'][0][1]['auth_token'])
+                        "Authorization": 'Bearer ' + auth_token #+str(session['auth_token'])
                         }
                 # Open the file and make the query
             with open(filename, 'rb') as file_image:
@@ -789,8 +765,8 @@ def home():
 
     # resp.content contains the json response.
     all_product_info= resp.content.decode('utf-8')
-    if '_flashes' in session:
-        user_id= session['_flashes'][0][1]['hasura_id']
+    if 'auth_token' in session:
+        user_id= session['hasura_id']
         # This is the json payload for the query
         requestPayload = {
                         "type": "select",
@@ -810,7 +786,7 @@ def home():
         # Setting headers
         headers = {
             "Content-Type": "application/json",
-            "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
+            "Authorization": 'Bearer ' +str(session['auth_token'])
         }
 
         # Make the query and store response in resp
@@ -836,7 +812,7 @@ def home():
         # Setting headers
         headers = {
             "Content-Type": "application/json",
-            "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
+            "Authorization": 'Bearer ' +session['auth_token']
         }
 
         # Make the query and store response in resp
@@ -857,7 +833,7 @@ def addPhoto():
             url = "https://filestore.equation37.hasura-app.io/v1/file"
             headers = {
                         "Content-Type": "image/png",
-                        "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token']) #+str(session['_flashes'][0][1]['auth_token'])
+                        "Authorization": 'Bearer ' +session['auth_token'] #+str(session['auth_token'])
                         }
 
             # Open the file and make the query
