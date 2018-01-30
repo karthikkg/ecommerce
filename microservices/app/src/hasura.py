@@ -64,7 +64,7 @@ def getinfo():
         resp = requests.request("GET", url, headers=headers)
 
         # resp.content contains the json response.
-        return resp
+        return resp.content
     elif 'session' in session:
         url = "https://auth.banner20.hasura-app.io/v1/user/info"
 
