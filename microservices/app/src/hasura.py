@@ -72,7 +72,7 @@ def getinfo():
         # Setting headers
         headers = {
             "Content-Type": "application/json",
-            "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
+            "session": session['session']
         }
 
         # Make the query and store response in resp
