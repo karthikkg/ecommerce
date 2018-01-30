@@ -413,7 +413,7 @@ def login():
         # Make the query and store response in resp
         resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
         response = make_response(render_template('index.html'))
-        response.set_cookie(resp)
+        response.set_cookie(resp.content)
         #response.set_cookie('age', b'26')
         # resp.content contains the json response.
         print(resp.content)
