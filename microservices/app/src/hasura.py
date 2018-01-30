@@ -503,44 +503,16 @@ def add_product():
         #if 'seller_id' in resp :
         print('enetered post\n')
         product_name = request.form['product_name']
-        category = request.form['category']
-        print('category:\n',category)
+        sub_category = request.form['category']
+        #print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
-        print(description)
+        #print(description)
         file = request.files['filename']
-        print(file)
+        #print(file)
         # This is the url to which the query is made
         # This is the json payload for the query
-        requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "sub_category",
-                "columns": [
-                    "id"
-                ],
-                "where": {
-                    "id": {
-                        "$eq": category
-                    }
-                }
-            }
-        }
-
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
-
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-        print('resp of category id query\n',resp )
-        # resp.content contains the json response.
-        string = resp.content.decode('utf-8')
-        json_obj = json.loads(string)
-        print('json_obj\n',json_obj )
-        category_id = json_obj[0]['id']
-        print('category_id\n',category_id )
+        
         #category_id = resp.json()
         #print('category_id :\n',category_id)
         #image_url = getPhoto_url(image)
@@ -550,7 +522,7 @@ def add_product():
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.getcwd(),filename))
             file=filename
-            print(file)
+            #print(file)
                 # This is the url to which the query is made
             url = "https://filestore.banner20.hasura-app.io/v1/file"
             headers = {
@@ -562,39 +534,57 @@ def add_product():
                 resp = requests.post(url, data=file_image.read(), headers=headers)
 
                 # resp.content contains the json response.
-            print(resp.content)
-            image_url = resp.content
+            #print(resp.content)
+            string = resp.content.decode('utf-8')
+            json_obj = json.loads(string)
+            print(json_obj)
+            imageurl = json_obj[0]['file_id']
+            image_url = imageurl + resp.content.decode('utf8')
+            print(image_url)
             #return url + '/'+ str(resp.content.decode())
         #return False
+
+        # This is the json payload for the query
+        
+
+        # This is the url to which the query is made
+        url = "https://data.banner20.hasura-app.io/v1/query"
 
         # This is the json payload for the query
         requestPayload = {
             "type": "insert",
             "args": {
                 "table": "product",
-                "objects": [{"name": product_name,
-                                                "price": price,
-                                                "sub_category_id": category_id,
-                                                "description": description,
-                                                "seller_id": seller_id,
-                                                }],
-            "returning": ["id"]
-
-
+                "objects": [
+                    {
+                        "sub_category_id": sub_category,
+                        "seller_id": seller_id,
+                        "price": price,
+                        "name": product_name,
+                        "description": description
+                    }
+                ],
+                "returning": [
+                    "id"
+                ]
             }
         }
 
         # Setting headers
         headers = {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer 9bca3d796e53cf35b76858063c27d4e69ddb8707d6d5c67c"
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
         print('resp of insert product query\n',resp )
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
-        seller_id = json_obj[0]['id']
+        product_id = json_obj[0]['id']
 
         #product_id = resp.json()
         #print('product_id: \n',product_id)
