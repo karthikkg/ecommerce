@@ -65,6 +65,22 @@ def getinfo():
 
         # resp.content contains the json response.
         return resp
+    elif 'session' in session:
+        url = "https://auth.banner20.hasura-app.io/v1/user/info"
+
+        # This is the json payload for the query
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token'])
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("GET", url, headers=headers)
+
+        # resp.content contains the json response.
+        return resp
+
     else:
         return 'you are not logged in'
 
@@ -497,7 +513,7 @@ def add_product():
         print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
-        image = request.form['image']
+        file = request.form['file']
     
         # This is the url to which the query is made
         # This is the json payload for the query
@@ -811,7 +827,7 @@ def home():
         return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
     else:
         return (category_and_sub_category+all_product_info)
-    
+@hasura_examples.route('/addphotos',methods = ['GET','POST'])   
 def addPhoto():
     if request.method == 'POST':
         file = request.files['file']
