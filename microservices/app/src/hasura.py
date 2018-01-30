@@ -14,9 +14,9 @@ from wtforms.validators import DataRequired, email, EqualTo
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.utils import secure_filename
 
-#UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['jpg','jpeg','png'])
-#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #UPLOAD_FOLDER = 'C:\\Users\\Karthik\\hello-python-flask\\microservices\\app\\src\\static\\uploads'
 #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -823,7 +823,7 @@ def addPhoto():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.realpath(os.path.abspath(os.path.dirname(filename))))
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image=filename
             print('the full path of image is\n',image)
             # This is the url to which the query is made
