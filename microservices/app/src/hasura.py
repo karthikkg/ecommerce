@@ -470,13 +470,14 @@ def getPhoto_url(file):
 
 @hasura_examples.route('/add_product',methods=['GET','POST'])
 def add_product():
-    if request.method == "POST" :#and '_flashes' in session:
-        string = getinfo().decode('utf-8')
-        json_obj = json.loads(string)
-        print(json_obj)
-        hasura_id = json_obj['hasura_id']
-        auth_token = json_obj['auth_token']
-        #hasura_id= 6#session['_flashes'][0][1]['hasura_id']
+    if request.method == "POST" and '_flashes' in session:
+        #string = getinfo().decode('utf-8')
+        #json_obj = json.loads(string)
+        #print(json_obj)
+        #hasura_id = json_obj['hasura_id']
+        auth_token=session['_flashes'][0][1]['hasura_id']
+        #auth_token = json_obj['auth_token']
+        hasura_id= session['_flashes'][0][1]['hasura_id']
     #if 'hasura_id' in user_info:
         print(hasura_id)
         #hasura_id = user_info['hasura_id']
