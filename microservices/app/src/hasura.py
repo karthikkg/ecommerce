@@ -555,7 +555,7 @@ def add_product():
                         "Authorization": 'Bearer ' + auth_token #+str(session['auth_token'])
                         }
                 # Open the file and make the query
-            with open(filename, 'rb') as file_image:
+            with open(image, 'rb') as file_image:
                 resp = requests.post(url, data=file_image.read(), headers=headers)
 
                 # resp.content contains the json response.
