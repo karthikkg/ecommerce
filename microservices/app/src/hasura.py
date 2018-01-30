@@ -613,7 +613,7 @@ def add_product():
 
         # resp.content contains the json response.
         print(resp.content)
-        flash('Successfully added product\n'+'product_id: '+product_id+'\nimage_url: '+image_url)
+        flash('Successfully added product\n'+'product_id: '+str(product_id)+'\nimage_url: '+image_url)
         return render_template('addphoto.html')
 
         #else:
