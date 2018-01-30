@@ -420,7 +420,7 @@ def login():
         
         #session_tokens = resp.content.decode('utf8')
         for i in session_tokens:
-            response.set_cookie(i, session_tokens[i])
+            session[i] = session_tokens[i]
 
 
         #response.set_cookie('age', b'26')
