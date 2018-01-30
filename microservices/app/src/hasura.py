@@ -474,8 +474,8 @@ def add_product():
         string = getinfo().decode('utf-8')
         json_obj = json.loads(string)
         print(json_obj)
-        hasura_id = json_obj[0]['id']
-        auth_token = json_obj[0]['auth_token']
+        hasura_id = json_obj['id']
+        auth_token = json_obj['auth_token']
         #hasura_id= 6#session['_flashes'][0][1]['hasura_id']
     #if 'hasura_id' in user_info:
         print(hasura_id)
