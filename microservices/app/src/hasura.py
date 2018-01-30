@@ -195,7 +195,7 @@ def signup():
 
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-            return resp
+            return resp.content
             # resp.content contains the json response.
             print(resp.content)
     return render_template('signup.html',form = form)
@@ -301,7 +301,7 @@ def seller_signup():
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
             # resp.content contains the json response.
-            print(resp.content)
+            return resp.content
     return render_template('seller_signup.html',form=form)
 
 class seller_loginForm(Form):
