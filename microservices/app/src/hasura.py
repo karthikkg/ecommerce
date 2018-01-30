@@ -14,11 +14,13 @@ from wtforms.validators import DataRequired, email, EqualTo
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = 'static\uploads'
 ALLOWED_EXTENSIONS = set(['jpg','jpeg','png'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #UPLOAD_FOLDER = 'C:\\Users\\Karthik\\hello-python-flask\\microservices\\app\\src\\static\\uploads'
 #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.path.dirname(os.path.abspath(__file__))
+
 
 
 
