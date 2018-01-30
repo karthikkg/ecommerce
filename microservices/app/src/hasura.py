@@ -497,7 +497,7 @@ def add_product():
         print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
-        file = request.form['image']
+        image = request.form['image']
     
         # This is the url to which the query is made
         # This is the json payload for the query
@@ -812,3 +812,25 @@ def home():
     else:
         return (category_and_sub_category+all_product_info)
     
+def addPhoto():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+            image=filename
+            # This is the url to which the query is made
+            url = "https://filestore.equation37.hasura-app.io/v1/file"
+            headers = {
+                        "Content-Type": "image/png",
+                        "Authorization": 'Bearer ' +str(session['_flashes'][0][1]['auth_token']) #+str(session['_flashes'][0][1]['auth_token'])
+                        }
+
+            # Open the file and make the query
+            with open(filename, 'rb') as file_image:
+                resp = requests.post(url, data=file_image.read(), headers=headers)
+
+            # resp.content contains the json response.
+            print(resp.content)
+            return str(resp.json())
+    return render_template('addphotos.html')
