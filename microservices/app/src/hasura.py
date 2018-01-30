@@ -508,7 +508,7 @@ def add_product():
         price = request.form['price']
         description = request.form['description']
         print(description)
-        file = request.form['file']
+        file = request.form['filename']
         print(file)
         # This is the url to which the query is made
         # This is the json payload for the query
