@@ -823,9 +823,9 @@ def addPhoto():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.realpath(filename))
+            file.save(os.path.realpath(os.path.abspath(os.path.dirname(filename))))
             image=filename
-            print(image)
+            print('the full path of image is\n',image)
             # This is the url to which the query is made
             url = "https://filestore.equation37.hasura-app.io/v1/file"
             headers = {
