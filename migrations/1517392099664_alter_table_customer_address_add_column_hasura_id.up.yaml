@@ -1,3 +1,0 @@
-- args:
-    sql: ALTER TABLE "customer_address" ADD COLUMN "hasura_id" bigint NOT NULL
-  type: run_sql
