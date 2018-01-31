@@ -906,12 +906,13 @@ def products():
 
     # resp.content contains the json response.
     print(resp.content)
+    products_list = resp.content
     print('resp of product query\n',resp )
-    string = resp.content.decode('utf-8')
-    json_obj = json.loads(string)
+    #string = resp.content.decode('utf-8')
+    #json_obj = json.loads(string)
     #product_id = json_obj['returning'][0]['id']
     #print('the product id is \n', product_id)
-    products_list = json_obj[0]
+    #products_list = json_obj[0]
     product_list = []
     for i in products_list:
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
