@@ -836,10 +836,11 @@ def home():
                 return (category_and_sub_category+'+\n'+username+'\n'+all_product_info)
     else:
         return (category_and_sub_category+all_product_info)
-
+"""
 @hasura_examples.route('/account/profile')
 def profile():
     if 'hasura_id' in session:
+
             requestPayload = {
             "type": "select",
             "args": {
@@ -868,6 +869,7 @@ def profile():
     else:
         return "please login"
 """
+"""
 @hasura_examples.route("/account/profile/edit")
 def editProfile():
     if 'hasura_id' in session:
@@ -875,3 +877,4 @@ def editProfile():
 
 
 
+""
