@@ -818,7 +818,10 @@ def home():
 
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-        cart_count = resp.content.decode()
+        string = resp.content.decode('utf-8')
+        json_obj = json.loads(string)
+        cart_count = json_obj['returning'][0]['id']
+        #cart_count = resp.content.decode()
         return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
     else:
         return (category_and_sub_category+all_product_info)
