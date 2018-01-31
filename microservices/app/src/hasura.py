@@ -767,22 +767,23 @@ def home():
     # resp.content contains the json response.
     all_product_info= resp.content.decode('utf-8')
     if 'auth_token' in session:
-        user_id= session['hasura_id']
+        hasura_id= session['hasura_id']
         # This is the json payload for the query
         requestPayload = {
-                        "type": "select",
-                        "args": {
-                            "table": "user",
-                            "columns": [
-                                "user_first_name"
-                            ],
-                            "where": {
-                                "hasura_id": {
-                                    "$eq": user_id
-                                }
-                            }
-                        }
+            "type": "select",
+            "args": {
+                "table": "user",
+                "columns": [
+                    "user_id",
+                    "user_first_name"
+                ],
+                "where": {
+                    "hasura_id": {
+                        "$eq": hasura_id
                     }
+                }
+            }
+        }
 
         # Setting headers
         headers = {
@@ -794,35 +795,44 @@ def home():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        username = resp.content.decode()
-        requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "customer_cart_count",
-                "columns": [
-                    "cart_items_count"
-                ],
-                "where": {
-                    "customer_id": {
-                        "$eq": user_id
-                    }
-                }
-            }
-        }
-
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": 'Bearer ' +session['auth_token']
-        }
-
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
         print(json_obj)
-        cart_count = json_obj[0]['id']
-        #cart_count = resp.content.decode()
-        return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
+        if json_obj:
+            user_id = json_obj[0]['id']
+            username = json_obj[0]['username']
+            #username = resp.content.decode()
+            requestPayload = {
+                "type": "select",
+                "args": {
+                    "table": "customer_cart_count",
+                    "columns": [
+                        "cart_items_count"
+                    ],
+                    "where": {
+                        "customer_id": {
+                            "$eq": user_id
+                        }
+                    }
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": 'Bearer ' +session['auth_token']
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+            string = resp.content.decode('utf-8')
+            json_obj = json.loads(string)
+            if json_obj:
+                print(json_obj)
+                cart_count = json_obj[0]['cart_items_count']
+                #cart_count = resp.content.decode()
+                return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
+            else:
+                return (category_and_sub_category+'+\n'+username+'\n'+all_product_info)
     else:
         return (category_and_sub_category+all_product_info)
