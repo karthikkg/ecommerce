@@ -799,8 +799,8 @@ def home():
         json_obj = json.loads(string)
         print(json_obj)
         if json_obj:
-            user_id = json_obj[0]['id']
-            username = json_obj[0]['username']
+            user_id = json_obj[0]['user_id']
+            username = json_obj[0]['user_first_name']
             #username = resp.content.decode()
             requestPayload = {
                 "type": "select",
