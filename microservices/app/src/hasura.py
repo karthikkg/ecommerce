@@ -874,7 +874,7 @@ def profile():
 def editProfile():
     if 'hasura_id' in session:
 """
-@hasura_examples.route('/getproducts'):
+@hasura_examples.route('/getproducts')
 def products():
 
     # This is the json payload for the query
