@@ -858,11 +858,10 @@ def profile():
         # Setting headers
         headers = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 9bca3d796e53cf35b76858063c27d4e69ddb8707d6d5c67c"
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
         print(resp.content)
