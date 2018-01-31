@@ -848,7 +848,7 @@ def profile():
                     "*"
                 ],
                 "where": {
-                    "user_id": {
+                    "hasura_id": {
                         "$eq": session['hasura_id']
                     }
                 }
@@ -868,8 +868,11 @@ def profile():
         print(resp.content)
     else:
         retun "please login"
-
+"""
 @hasura_examples.route("/account/profile/edit")
 def editProfile():
     if 'hasura_id' in session:
+"""
+
+
 
