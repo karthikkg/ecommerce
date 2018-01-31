@@ -1,3 +1,0 @@
-- args:
-    sql: ALTER TABLE "product" ADD COLUMN "first_image_url" text NUll
-  type: run_sql
