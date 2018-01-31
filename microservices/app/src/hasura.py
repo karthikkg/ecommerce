@@ -800,7 +800,7 @@ def home():
             "args": {
                 "table": "customer_cart_count",
                 "columns": [
-                    "cart_items"
+                    "cart_items_count"
                 ],
                 "where": {
                     "customer_id": {
@@ -822,27 +822,3 @@ def home():
         return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
     else:
         return (category_and_sub_category+all_product_info)
-@hasura_examples.route('/addphotos',methods = ['GET','POST'])   
-def addPhoto():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image=filename
-            print('the full path of image is\n',image)
-            # This is the url to which the query is made
-            url = "https://filestore.equation37.hasura-app.io/v1/file"
-            headers = {
-                        "Content-Type": "image/png",
-                        "Authorization": 'Bearer ' +session['auth_token'] #+str(session['auth_token'])
-                        }
-
-            # Open the file and make the query
-            with open(filename, 'rb') as file_image:
-                resp = requests.post(url, data=file_image.read(), headers=headers)
-
-            # resp.content contains the json response.
-            print(resp.content)
-            return str(resp.json())
-    return render_template('addphotos.html')
