@@ -905,7 +905,7 @@ def products():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    print('the type of resp.contet is\n'+type(resp.content)+'\n')
+    print('the type of resp.contet is\n'+str(type(resp.content))+'\n')
     products_list = resp.content
     print('resp of product query\n',resp )
     #string = resp.content.decode('utf-8')
