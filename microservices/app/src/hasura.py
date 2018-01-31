@@ -820,7 +820,8 @@ def home():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
-        cart_count = json_obj['returning'][0]['id']
+        print(json_obj)
+        cart_count = json_obj[0]['id']
         #cart_count = resp.content.decode()
         return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
     else:
