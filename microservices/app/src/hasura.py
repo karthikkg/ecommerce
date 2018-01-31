@@ -908,7 +908,8 @@ def products():
     print('the type of resp.contet is\n'+str(type(resp.content))+'\n')
     products_list = resp.content
     print('resp of product query\n',resp )
-    #string = resp.content.decode('utf-8')
+    string = resp.content.decode('utf-8')
+    products_list = literal_eval(string)
     #json_obj = json.loads(string)
     #product_id = json_obj['returning'][0]['id']
     #print('the product id is \n', product_id)
