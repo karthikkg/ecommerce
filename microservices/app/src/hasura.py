@@ -566,7 +566,8 @@ def add_product():
                         "seller_id": seller_id,
                         "price": price,
                         "name": product_name,
-                        "description": description
+                        "description": description,
+                        "first_image_url":image_url
                     }
                 ],
                 "returning": [
@@ -590,6 +591,7 @@ def add_product():
         string = resp.content.decode('utf-8')
         json_obj = json.loads(string)
         product_id = json_obj['returning'][0]['id']
+        print('the product id is \n', product_id)
 
         #product_id = resp.json()
         #print('product_id: \n',product_id)
