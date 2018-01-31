@@ -914,7 +914,7 @@ def products():
     products_list = json_obj[0]
     product_list = []
     for i in products_list:
-        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+i['id']
+        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
         i['product_url'] = product_url
         l.append(i)
     return jsonify(product_list)
