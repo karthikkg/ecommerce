@@ -829,7 +829,7 @@ def home():
             json_obj = json.loads(string)
             if json_obj:
                 print(json_obj)
-                cart_count = json_obj[0]['cart_items_count']
+                cart_count = str(json_obj[0]['cart_items_count'])
                 #cart_count = resp.content.decode()
                 return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
             else:
