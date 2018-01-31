@@ -836,3 +836,40 @@ def home():
                 return (category_and_sub_category+'+\n'+username+'\n'+all_product_info)
     else:
         return (category_and_sub_category+all_product_info)
+
+@hasura_examples.route('/account/profile')
+def profile():
+    if 'hasura_id' in session:
+            requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "customer_profile",
+                "columns": [
+                    "*"
+                ],
+                "where": {
+                    "user_id": {
+                        "$eq": session['hasura_id']
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer 9bca3d796e53cf35b76858063c27d4e69ddb8707d6d5c67c"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
+    else:
+        retun "please login"
+
+@hasura_examples.route("/account/profile/edit")
+def editProfile():
+    if 'hasura_id' in session:
+
