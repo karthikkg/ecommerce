@@ -866,7 +866,7 @@ def profile():
         # resp.content contains the json response.
         print(resp.content)
     else:
-        retun "please login"
+        return "please login"
 """
 @hasura_examples.route("/account/profile/edit")
 def editProfile():
