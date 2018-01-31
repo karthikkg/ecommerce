@@ -874,7 +874,41 @@ def profile():
 def editProfile():
     if 'hasura_id' in session:
 """
+@hasura_examples.route('/getproducts'):
+def products():
 
+    # This is the json payload for the query
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "product",
+            "columns": [
+                "id",
+                "name",
+                "price",
+                "first_image_url"
+            ],
+            "order_by": [
+                {
+                    "column": "id",
+                    "order": "desc"
+                }
+            ]
+        }
+    }
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
-""
+    # resp.content contains the json response.
+    print(resp.content)
+    print('resp of product query\n',resp )
+    string = resp.content.decode('utf-8')
+    json_obj = json.loads(string)
+    #product_id = json_obj['returning'][0]['id']
+    #print('the product id is \n', product_id)
+    return json_obj
