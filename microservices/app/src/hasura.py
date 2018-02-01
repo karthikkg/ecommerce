@@ -765,7 +765,7 @@ def home():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    all_product_info= resp.content.decode('utf-8')
+    all_product_info= jsonify(resp.content.decode('utf-8'))
     if 'auth_token' in session:
         hasura_id= session['hasura_id']
         # This is the json payload for the query
@@ -831,9 +831,9 @@ def home():
                 print(json_obj)
                 cart_count = str(json_obj[0]['cart_items_count'])
                 #cart_count = resp.content.decode()
-                return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
+                return jsonify((category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info))
             else:
-                return (category_and_sub_category+'+\n'+username+'\n'+all_product_info)
+                return jsonify((category_and_sub_category+'+\n'+username+'\n'+all_product_info))
     else:
         return jsonify(category_and_sub_category+all_product_info)
 """
