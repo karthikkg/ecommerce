@@ -336,7 +336,7 @@ def seller_login():
 
 @hasura_examples.route('/login',methods=['GET','POST'])
 def login():
-    form = seller_loginForm()
+    #form = seller_loginForm()
     if request.method == "POST":
         print("\n\n\nprint \n entered form correctly\n \n")
         email = request.form['email'] #form.email.data #form.email.data
