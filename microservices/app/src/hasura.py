@@ -744,7 +744,9 @@ def home():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    category_and_sub_category = resp.content.decode('utf-8')
+    string = resp.content.decode('utf-8')
+    category_and_sub_category = literal_eval(string)
+    category_and_sub_category = jsonify(category_and_sub_category)
 
     requestPayload = {
         "type": "select",
@@ -766,8 +768,8 @@ def home():
 
     # resp.content contains the json response.
     string = resp.content.decode('utf8')
-    home_page = literal_eval(string)
-    all_product_info= jsonify(home_page)
+    product_info = literal_eval(string)
+    all_product_info= jsonify(product_info)
     if 'auth_token' in session:
         hasura_id= session['hasura_id']
         # This is the json payload for the query
