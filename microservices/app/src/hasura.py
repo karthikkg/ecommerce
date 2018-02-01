@@ -839,7 +839,7 @@ def home():
             else:
                 return jsonify((category_and_sub_category+'+\n'+username+'\n'+all_product_info))
     else:
-        return jsonify(category_and_sub_category+all_product_info)
+        return jsonify(category_and_sub_category,all_product_info)
 """
 @hasura_examples.route('/account/profile')
 def profile():
