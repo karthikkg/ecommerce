@@ -655,7 +655,9 @@ def product_info():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        product_information = resp.content
+        product_information = resp.content.decode('utf-8')
+        product_information = literal_eval(product_information)
+        
 
         # This is the json payload for the query
         requestPayload = {
@@ -682,9 +684,11 @@ def product_info():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        images = resp.content
+        images = resp.content.decode('utf-8')
+        images = literal_eval(images)
+        #images = resp.content
 
-        return (product_information,images)
+        return jsonify(product_information,images)
 
 # Display products by sub category id
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
@@ -714,9 +718,10 @@ def displaybysubcategory():
 
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
+        products_by_sub_category = resp.content.decode('utf-8')
+        products_by_sub_category = literal_eval(products_by_sub_category)
         # resp.content contains the json response.
-        return resp.content
+        return jsonify(products_by_sub_category)
         
 
 
@@ -745,17 +750,26 @@ def home():
 
     # resp.content contains the json response.
     category_and_sub_category = resp.content.decode('utf-8')
-
+    category_and_sub_category = literal_eval(category_and_sub_category)
+    # This is the json payload for the query
     requestPayload = {
         "type": "select",
         "args": {
-            "table": "complete_product_info",
+            "table": "product",
             "columns": [
-                "*"
+                "id",
+                "name",
+                "price",
+                "first_image_url"
+            ],
+            "order_by": [
+                {
+                    "column": "id",
+                    "order": "desc"
+                }
             ]
         }
     }
-
     # Setting headers
     headers = {
         "Content-Type": "application/json"
@@ -765,7 +779,16 @@ def home():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    all_product_info= resp.content.decode('utf-8')
+    print('the type of resp.contet is\n'+str(type(resp.content))+'\n')
+    products_list = resp.content
+    print('resp of product query\n',resp )
+    string = resp.content.decode('utf-8')
+    products_list = literal_eval(string)
+    product_list = []
+    for i in products_list:
+        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
+        i['product_url'] = product_url
+        product_list.append(i)
     if 'auth_token' in session:
         hasura_id= session['hasura_id']
         # This is the json payload for the query
@@ -800,7 +823,8 @@ def home():
         print(json_obj)
         if json_obj:
             user_id = json_obj[0]['user_id']
-            username = json_obj[0]['user_first_name']
+            user_first_name =[]
+            user_first_name.append({'user first name' : json_obj[0]['user_first_name']})
             #username = resp.content.decode()
             requestPayload = {
                 "type": "select",
@@ -829,13 +853,14 @@ def home():
             json_obj = json.loads(string)
             if json_obj:
                 print(json_obj)
-                cart_count = str(json_obj[0]['cart_items_count'])
+                cart_count = []
+                cart_count.append({'cart count' : json_obj[0]['cart_items_count']})
                 #cart_count = resp.content.decode()
-                return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
+                return jsonify(category_and_sub_category,user_first_name,cart_count,product_list)
             else:
-                return (category_and_sub_category+'+\n'+username+'\n'+all_product_info)
+                return jsonify(category_and_sub_category,user_first_name,product_list)
     else:
-        return (category_and_sub_category+all_product_info)
+        return jsonify(category_and_sub_category,product_list)
 """
 @hasura_examples.route('/account/profile')
 def profile():
@@ -910,10 +935,6 @@ def products():
     print('resp of product query\n',resp )
     string = resp.content.decode('utf-8')
     products_list = literal_eval(string)
-    #json_obj = json.loads(string)
-    #product_id = json_obj['returning'][0]['id']
-    #print('the product id is \n', product_id)
-    #products_list = json_obj[0]
     product_list = []
     for i in products_list:
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
