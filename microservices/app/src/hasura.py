@@ -378,7 +378,7 @@ def login():
         # resp.content contains the json response.
         #print(resp.content)
         if resp.json():
-            return jsonify(session_tokens,session)
+            return jsonify(session)
         else:
             return jsonify({"error":"Invalid Email/Password"})
     return jsonify({"error":"The method is not allowed"})
