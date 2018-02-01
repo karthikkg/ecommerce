@@ -744,9 +744,7 @@ def home():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    string = resp.content.decode('utf-8')
-    category_and_sub_category = literal_eval(string)
-    category_and_sub_category = jsonify(category_and_sub_category)
+    category_and_sub_category = resp.content.decode('utf-8')
 
     requestPayload = {
         "type": "select",
@@ -767,9 +765,7 @@ def home():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    string = resp.content.decode('utf8')
-    product_info = literal_eval(string)
-    all_product_info= jsonify(product_info)
+    all_product_info= resp.content.decode('utf-8')
     if 'auth_token' in session:
         hasura_id= session['hasura_id']
         # This is the json payload for the query
@@ -835,11 +831,11 @@ def home():
                 print(json_obj)
                 cart_count = str(json_obj[0]['cart_items_count'])
                 #cart_count = resp.content.decode()
-                return jsonify((category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info))
+                return (category_and_sub_category+'+\n'+username+'\n'+cart_count+'\n'+all_product_info)
             else:
-                return jsonify((category_and_sub_category+'+\n'+username+'\n'+all_product_info))
+                return (category_and_sub_category+'+\n'+username+'\n'+all_product_info)
     else:
-        return jsonify(category_and_sub_category,all_product_info)
+        return (category_and_sub_category+all_product_info)
 """
 @hasura_examples.route('/account/profile')
 def profile():
