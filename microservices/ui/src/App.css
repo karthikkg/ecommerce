@@ -1,0 +1,74 @@
+.App {
+  text-align: center;
+}
+.imageSlider{
+  margin: auto;
+  padding: 10px;  
+  height: 300px;
+  width: 85%;
+}
+.productGridRoot{
+  margin: auto;
+  display: flex;
+  right: 0;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow: hidden;
+  
+}
+.productViewContainer{
+  align-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 40px;
+  padding-right: 40px;
+  width: 220px;
+  height: 220px;
+  max-width: 220px;
+}
+.productGridContainer{
+  width: 85%;
+  height: 25%;
+}
+.productGridIcon{
+    color: rgba(255, 255, 255, 0.54);
+}
+.footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+}.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/*Products Page CSS*/
+.ProductdescriptionText{
+  font-size: 20px;
+}
+
+
