@@ -91,29 +91,12 @@ def get_users():
     data = response.json()
     print(json.dumps(data))
     return jsonify(data=data)
-# Task 7: A text box which sends data as POST to any endpoint and log the received to stdout.
-class InputForm(Form):
-    """docstring for InputForm"""
-    first_name = StringField('first_name', validators = [DataRequired()])
-    last_name = StringField('last_name', validators = [DataRequired()])
-    email = EmailField('email', validators = [DataRequired(), email()]) 
-    phone_number = StringField('phone_number', validators = [DataRequired()]) 
-    password = PasswordField('password',validators=[DataRequired()])
-    #confirm = PasswordField('password2',validators=[DataRequired()])
-
-class signupForm(Form):
-    """docstring for InputForm"""
-    first_name = StringField('first_name', validators = [DataRequired()])
-    last_name = StringField('last_name', validators = [DataRequired()])
-    email = EmailField('email', validators = [DataRequired(), email()]) 
-    phone_number = StringField('phone_number', validators = [DataRequired()]) 
-    password = PasswordField('password',validators=[DataRequired(),EqualTo('password2','Passwords must match')])
-    password2 = PasswordField('password2',validators=[DataRequired()])
 
 @hasura_examples.route('/signup',methods=['GET','POST'])
 def signup():
-    form = signupForm()
-    if form.validate_on_submit(): #if request.method == "POST":
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if request.method == "POST":
         print("\n\n\nprint \n entered form correctly\n \n")
         first_name = form.first_name.data #request.form['first_name']
         last_name = form.last_name.data #request.form['last_name']
@@ -985,9 +968,6 @@ def products():
 def logini():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    print("the js is \n",js)
-    #print("the js['data'] is \n",js['data'])
-
 
     # This is the url to which the query is made
     url = "https://auth.banner20.hasura-app.io/v1/login"

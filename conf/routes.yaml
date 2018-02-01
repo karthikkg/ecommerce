@@ -170,6 +170,16 @@ app:
     upstreamServicePort: 80
     corsPolicy: allow_all
 
+# expose reactjs microserivce at a subdomain
+app:
+  /:
+    upstreamService:
+      name: app
+      namespace: '{{ cluster.metadata.namespaces.user }}'
+    upstreamServicePath: /
+    upstreamServicePort: 80
+    corsPolicy: allow_all
+
 # To see actual endpoints for these routes, use `$ hasura microserivce list`
 
     '{{ cluster.metadata.namespaces.user }}.ui':
