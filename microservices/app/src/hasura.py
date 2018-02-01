@@ -1009,5 +1009,23 @@ def logini():
 
     # Make the query and store response in resp
     resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+    #response = make_response(render_template('index.html'))
+    string = resp.content.decode('utf-8')
+    json_obj = json.loads(string)
+    print(json_obj)
+    session_tokens = json_obj
+    
+    #session_tokens = resp.content.decode('utf8')
+    for i in session_tokens:
+        session[i] = session_tokens[i]
+
+
+    #response.set_cookie('age', b'26')
+    # resp.content contains the json response.
+    print(resp.content)
+    #flash(resp.json())
+    #return response
+    #return response
 
     return resp.content
