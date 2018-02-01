@@ -364,21 +364,21 @@ def login():
         # Make the query and store response in resp
         resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
         #response = make_response(render_template('index.html'))
-        #string = resp.content.decode('utf-8')
-        #json_obj = json.loads(string)
+        string = resp.content.decode('utf-8')
+        json_obj = json.loads(string)
         #print(json_obj)
-        #session_tokens = json_obj
+        session_tokens = json_obj
         
         #session_tokens = resp.content.decode('utf8')
-        #for i in session_tokens:
-            #session[i] = session_tokens[i]
+        for i in session_tokens:
+            session[i] = session_tokens[i]
 
 
         #response.set_cookie('age', b'26')
         # resp.content contains the json response.
         #print(resp.content)
         if resp.json():
-            return resp.content
+            return jsonify(session_tokens,session)
         else:
             return jsonify({"error":"Invalid Email/Password"})
     return jsonify({"error":"The method is not allowed"})
