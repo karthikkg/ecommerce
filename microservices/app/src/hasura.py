@@ -765,7 +765,9 @@ def home():
     resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
-    all_product_info= jsonify(resp.content.decode('utf-8'))
+    string = resp.content.decode('utf8')
+    home_page = literal_eval(string)
+    all_product_info= jsonify(home_page)
     if 'auth_token' in session:
         hasura_id= session['hasura_id']
         # This is the json payload for the query
