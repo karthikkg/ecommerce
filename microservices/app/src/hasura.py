@@ -979,3 +979,32 @@ def products():
         i['product_url'] = product_url
         product_list.append(i)
     return jsonify(product_list)
+
+
+@hasura_examples.route('/logini', methods=['POST'])
+def logini():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+
+    # This is the url to which the query is made
+    url = "https://auth.banner20.hasura-app.io/v1/login"
+
+    # This is the json payload for the query
+    requestPayload = {
+        "provider": "username",
+        "data": {
+            "username": js['data']['email'],
+            "password": js['data']['password']
+        }
+    }
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json",
+
+    }
+
+    # Make the query and store response in resp
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+    return resp.content
