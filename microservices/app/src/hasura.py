@@ -98,11 +98,11 @@ def signup():
     js = json.loads(json.dumps(content))
     if request.method == "POST":
         print("\n\n\nprint \n entered form correctly\n \n")
-        first_name = form.first_name.data #request.form['first_name']
-        last_name = form.last_name.data #request.form['last_name']
-        email = form.email.data #request.form['email']
-        phone_number = form.phone_number.data #request.form['phone_number']
-        password = form.password.data #request.form['password']
+        first_name = request.form['first_name']#form.first_name.data 
+        last_name =  request.form['last_name']#form.last_name.data
+        email = request.form['email'] #form.email.data 
+        phone_number =  request.form['phone_number']#form.phone_number.data
+        password = request.form['password']#form.password.data
         print(first_name,last_name,email,phone_number,password)
         app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
 
@@ -133,7 +133,7 @@ def signup():
 
         # resp.content contains the json response.
         if resp.json():
-            return render_template("signup.html",form=form)
+            return jsonify({"error":"The Email is already taken as username"})
         else:
             authurl = "https://auth.banner20.hasura-app.io/v1/signup"
 
@@ -182,29 +182,19 @@ def signup():
             # Make the query and store response in resp
             resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
             return resp.content
-            # resp.content contains the json response.
-            print(resp.content)
-    return render_template('signup.html',form = form)
-
-class seller_signupForm(Form):
-    """docstring for InputForm"""
-    first_name = StringField('first_name', validators = [DataRequired()])
-    last_name = StringField('last_name', validators = [DataRequired()])
-    email = EmailField('email', validators = [DataRequired(), email()]) 
-    phone_number = StringField('phone_number', validators = [DataRequired()]) 
-    password = PasswordField('password',validators=[DataRequired(),EqualTo('password2','Passwords must match')])
-    password2 = PasswordField('password2',validators=[DataRequired()])
+    return "This method is not allowed"
 
 @hasura_examples.route('/seller_signup',methods=['GET','POST'])
 def seller_signup():
-    form = seller_signupForm()
-    if form.validate_on_submit():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if request.method == "POST":
         print("\n\n\nprint \n entered form correctly\n \n")
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        email = form.email.data
-        phone_number = form.phone_number.data
-        password = form.password.data
+        first_name = request.form['first_name']#form.first_name.data 
+        last_name =  request.form['last_name']#form.last_name.data
+        email = request.form['email'] #form.email.data 
+        phone_number =  request.form['phone_number']#form.phone_number.data
+        password = request.form['password']#form.password.data
         print(first_name,last_name,email,phone_number,password)
         app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
 
@@ -235,10 +225,8 @@ def seller_signup():
 
         # resp.content contains the json response.
         if resp.json():
-            print('\n'+str(resp.json())+'username/email already registerd'+'\n')
-            return render_template('seller_signup.html',form=form)
+            return jsonify({"error":"The Email is already taken as username"})
         else:
-            print('\n'+str(resp.json())+'username/email not yet registerd'+'\n')
             authurl = "https://auth.banner20.hasura-app.io/v1/signup"
 
             # This is the json payload for the query
@@ -288,19 +276,15 @@ def seller_signup():
 
             # resp.content contains the json response.
             return resp.content
-    return render_template('seller_signup.html',form=form)
+    return "This method is not allowed"
 
-class seller_loginForm(Form):
-    """docstring for InputForm"""
-    email = EmailField('email', validators = [DataRequired(), email()]) 
-    password = PasswordField('password',validators=[DataRequired()])
+
 @hasura_examples.route('/seller_login',methods=['GET','POST'])
 def seller_login():
-    form = seller_loginForm()
-    if form.validate_on_submit():
+    if request.method == "POST":
         print("\n\n\nprint \n entered form correctly\n \n")
-        email = form.email.data
-        password = form.password.data
+        email = request.form['email'] #form.email.data #form.email.data
+        password = request.form['password']#form.password.data
         app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
 
@@ -345,20 +329,18 @@ def seller_login():
 
          # resp.content contains the json response.
         if resp.json():
-            flash('Welcome ',email)
-            return render_template('index.html',form=form,customer = resp.json())
+            return resp.content
         else:
-            flash('Invalid username or password')
-            return render_template('seller_login.html',form=form)
-    return render_template('seller_login.html',form=form)
+            return jsonify({"error":"Invalid Email/Password"})
+    return jsonify({"error":"The method is not allowed"})
 
 @hasura_examples.route('/login',methods=['GET','POST'])
 def login():
     form = seller_loginForm()
-    if form.validate_on_submit():
+    if request.method == "POST":
         print("\n\n\nprint \n entered form correctly\n \n")
-        email = form.email.data
-        password = form.password.data
+        email = request.form['email'] #form.email.data #form.email.data
+        password = request.form['password']#form.password.data
         app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
         import requests
@@ -381,24 +363,25 @@ def login():
 
         # Make the query and store response in resp
         resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-        response = make_response(render_template('index.html'))
-        string = resp.content.decode('utf-8')
-        json_obj = json.loads(string)
-        print(json_obj)
-        session_tokens = json_obj
+        #response = make_response(render_template('index.html'))
+        #string = resp.content.decode('utf-8')
+        #json_obj = json.loads(string)
+        #print(json_obj)
+        #session_tokens = json_obj
         
         #session_tokens = resp.content.decode('utf8')
-        for i in session_tokens:
-            session[i] = session_tokens[i]
+        #for i in session_tokens:
+            #session[i] = session_tokens[i]
 
 
         #response.set_cookie('age', b'26')
         # resp.content contains the json response.
-        print(resp.content)
-        #flash(resp.json())
-        #return response
-        return response
-    return render_template('login.html',form=form)
+        #print(resp.content)
+        if resp.json():
+            return resp.content
+        else:
+            return jsonify({"error":"Invalid Email/Password"})
+    return jsonify({"error":"The method is not allowed"})
 
 
 @hasura_examples.route('/logout', methods=['GET','POST'])
@@ -417,7 +400,7 @@ def logout():
 
     # resp.content contains the json response.
     print(resp.content)
-    return render_template('index.html')
+    return resp.content
 
 def allowed_file(filename):
     return '.' in filename and \
