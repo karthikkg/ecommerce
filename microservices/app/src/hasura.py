@@ -986,7 +986,7 @@ def logini():
     content = request.get_json()
     js = json.loads(json.dumps(content))
     print("the js is \n",js)
-    print("the js['data'] is \n",js['data'])
+    #print("the js['data'] is \n",js['data'])
 
 
     # This is the url to which the query is made
@@ -996,8 +996,8 @@ def logini():
     requestPayload = {
         "provider": "username",
         "data": {
-            "username": js['data']['email'],
-            "password": js['data']['password']
+            "username": js['email'],
+            "password": js['password']
         }
     }
 
