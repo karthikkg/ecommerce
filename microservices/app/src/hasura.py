@@ -723,7 +723,38 @@ def displaybysubcategory():
         # resp.content contains the json response.
         return jsonify(products_by_sub_category)
         
+# Display products by category id
+# url example : https://app.banner20.hasura-app.io/displaybycategory?category_id=1
+@hasura_examples.route("/displaybycategory")
+def displaybycategory():
+        
+        category_id = request.args.get("category_id")
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "complete_product_info",
+                "columns": [
+                    "*"
+                ],
+                "where": {
+                    "category_id": {
+                        "$eq": category_id
+                    }
+                }
+            }
+        }
 
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+        products_by_category = resp.content.decode('utf-8')
+        products_by_category = literal_eval(products_by_category)
+        # resp.content contains the json response.
+        return jsonify(products_by_category)
 
 
 @hasura_examples.route('/')
@@ -752,6 +783,13 @@ def home():
     category_and_sub_category = resp.content.decode('utf-8')
     category_and_sub_category = literal_eval(category_and_sub_category)
     # This is the json payload for the query
+    category_and_sub_category_list = []
+    for i in category_and_sub_category:
+        category_url = 'https://app.banner20.hasura-app.io/displaybycategory?category_id=' + str(i['category_id'])
+        i['category_url'] = category_url
+        sub_category_url = 'https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id='+str(i['sub_category_id'])
+        i['sub_category_url'] = sub_category_url
+        category_and_sub_category_list.append(i)
     requestPayload = {
         "type": "select",
         "args": {
@@ -856,11 +894,11 @@ def home():
                 cart_count = []
                 cart_count.append({'cart count' : json_obj[0]['cart_items_count']})
                 #cart_count = resp.content.decode()
-                return jsonify(category_and_sub_category,user_first_name,cart_count,product_list)
+                return jsonify(category_and_sub_category_list,user_first_name,cart_count,product_list)
             else:
-                return jsonify(category_and_sub_category,user_first_name,product_list)
+                return jsonify(category_and_sub_category_list,user_first_name,product_list)
     else:
-        return jsonify(category_and_sub_category,product_list)
+        return jsonify(category_and_sub_category_list,product_list)
 """
 @hasura_examples.route('/account/profile')
 def profile():
