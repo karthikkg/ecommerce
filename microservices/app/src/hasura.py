@@ -799,7 +799,7 @@ def home():
         i['product_url'] = product_url
         product_list.append(i)
     if 'auth_token' in js:
-        hasura_id= js['hasura_id']
+        hasura_id= js['data']['hasura_id']
         # This is the json payload for the query
         requestPayload = {
             "type": "select",
@@ -966,8 +966,8 @@ def json_login():
     requestPayload = {
         "provider": "username",
         "data": {
-            "username": js['username'],
-            "password": js['password']
+            "username": js['data']['username'],
+            "password": js['data']['password']
         }
     }
 
