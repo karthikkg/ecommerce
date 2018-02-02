@@ -337,10 +337,13 @@ def seller_login():
 @hasura_examples.route('/login',methods=['GET','POST'])
 def login():
     #form = seller_loginForm()
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+
 
     print("\n\n\nprint \n entered form correctly\n \n")
-    email = request.form['email'] #form.email.data #form.email.data
-    password = request.form['password']#form.password.data
+    email = js['username']
+    password = js['password']
     app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
     import requests
