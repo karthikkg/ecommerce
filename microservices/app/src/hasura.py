@@ -947,8 +947,8 @@ def products():
     return jsonify(product_list)
 
 
-@hasura_examples.route('/logini', methods=['POST'])
-def logini():
+@hasura_examples.route('/json_login', methods=['POST'])
+def json_login():
     content = request.get_json()
     js = json.loads(json.dumps(content))
 
@@ -959,7 +959,7 @@ def logini():
     requestPayload = {
         "provider": "username",
         "data": {
-            "username": js['email'],
+            "username": js['username'],
             "password": js['password']
         }
     }
