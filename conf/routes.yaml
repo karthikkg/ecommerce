@@ -177,7 +177,7 @@ app:
         dockerfile: microservices/ui/Dockerfile
         path: microservices/ui
 
-Manage configuration of a cluster added to the project
+Manage configuration of a cluster added to the project:
 
 Usage:
   hasura conf [command]
