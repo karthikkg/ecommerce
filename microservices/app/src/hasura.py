@@ -337,51 +337,51 @@ def seller_login():
 @hasura_examples.route('/login',methods=['GET','POST'])
 def login():
     #form = seller_loginForm()
-    if request.method == "POST":
-        print("\n\n\nprint \n entered form correctly\n \n")
-        email = request.form['email'] #form.email.data #form.email.data
-        password = request.form['password']#form.password.data
-        app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
-        import requests
-        # This is the url to which the query is made
-        url = "https://auth.banner20.hasura-app.io/v1/login"
+    print("\n\n\nprint \n entered form correctly\n \n")
+    email = request.form['email'] #form.email.data #form.email.data
+    password = request.form['password']#form.password.data
+    app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
-        # This is the json payload for the query
-        requestPayload = {
-            "provider": "username",
-            "data": {
-                "username": email,
-                "password": password
-            }
+    import requests
+    # This is the url to which the query is made
+    url = "https://auth.banner20.hasura-app.io/v1/login"
+
+    # This is the json payload for the query
+    requestPayload = {
+        "provider": "username",
+        "data": {
+            "username": email,
+            "password": password
         }
+    }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-        # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-        #response = make_response(render_template('index.html'))
-        #string = resp.content.decode('utf-8')
-        #json_obj = json.loads(string)
-        #print(json_obj)
-        #session_tokens = json_obj
-        
-        #session_tokens = resp.content.decode('utf8')
-        #for i in session_tokens:
-            #session[i] = session_tokens[i]
+    # Make the query and store response in resp
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+    #response = make_response(render_template('index.html'))
+    #string = resp.content.decode('utf-8')
+    #json_obj = json.loads(string)
+    #print(json_obj)
+    #session_tokens = json_obj
+    
+    #session_tokens = resp.content.decode('utf8')
+    #for i in session_tokens:
+        #session[i] = session_tokens[i]
 
 
-        #response.set_cookie('age', b'26')
-        # resp.content contains the json response.
-        #print(resp.content)
-        if resp.json():
-            return resp.content
-        else:
-            return jsonify({"error":"Invalid Email/Password"})
-    return jsonify({"error":"The method is not allowed"})
+    #response.set_cookie('age', b'26')
+    # resp.content contains the json response.
+    #print(resp.content)
+    if resp.json():
+        return resp.content
+    else:
+        return jsonify({"error":"Invalid Email/Password"})
+
 
 
 @hasura_examples.route('/logout', methods=['GET','POST'])
