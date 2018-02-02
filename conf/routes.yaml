@@ -170,16 +170,6 @@ app:
     upstreamServicePort: 80
     corsPolicy: allow_all
 
-# expose reactjs microserivce at a subdomain
-#app:
- # /:
-  #  upstreamService:
-   #   name: app
-    #  namespace: '{{ cluster.metadata.namespaces.user }}'
-    #upstreamServicePath: /
-    #upstreamServicePort: 80
-    #corsPolicy: allow_all
-
 # To see actual endpoints for these routes, use `$ hasura microserivce list`
 
     '{{ cluster.metadata.namespaces.user }}.ui':
@@ -187,6 +177,50 @@ app:
         dockerfile: microservices/ui/Dockerfile
         path: microservices/ui
 
+Manage configuration of a cluster added to the project
+
+Usage:
+  hasura conf [command]
+
+Aliases:
+  conf, config
+
+Available Commands:
+  apply           Apply configuration to a cluster
+  diff            Diff configuration of clusters
+  generate-domain Generate a new domain configuration for a cluster
+  generate-remote Generate remote configuration for a microservice
+  generate-route  Generate a route for accessing a microservice
+
+Flags:
+  -h, --help   help for conf
+
+Global Flags:
+      --project string   hasura project directory where the commands should be executed. (default: current directory)
+
+Use "hasura conf [command] --help" for more information about a command.
+Manage configuration of a cluster added to the project
+
+Usage:
+  hasura conf [command]
+
+Aliases:
+  conf, config
+
+Available Commands:
+  apply           Apply configuration to a cluster
+  diff            Diff configuration of clusters
+  generate-domain Generate a new domain configuration for a cluster
+  generate-remote Generate remote configuration for a microservice
+  generate-route  Generate a route for accessing a microservice
+
+Flags:
+  -h, --help   help for conf
+
+Global Flags:
+      --project string   hasura project directory where the commands should be executed. (default: current directory)
+
+Use "hasura conf [command] --help" for more information about a command.
 Manage configuration of a cluster added to the project
 
 Usage:
