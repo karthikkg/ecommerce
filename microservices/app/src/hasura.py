@@ -385,7 +385,7 @@ def login():
             return resp.content
         else:
             return jsonify({"error":"Invalid Email/Password"})
-    except:
+    except e:
         return e
 
 
