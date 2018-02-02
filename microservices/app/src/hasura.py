@@ -662,9 +662,7 @@ def product_info():
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
 @hasura_examples.route("/displaybysubcategory")
 def displaybysubcategory():
-    content = request.get_json()
-    js = json.loads(json.dumps(content))
-    subcategory_id = js["sub_category_id"]
+    category_id = request.args.get("category_id")
     requestPayload = {
         "type": "select",
         "args": {
@@ -696,9 +694,7 @@ def displaybysubcategory():
 # url example : https://app.banner20.hasura-app.io/displaybycategory?category_id=1
 @hasura_examples.route("/displaybycategory")
 def displaybycategory():
-    content = request.get_json()
-    js = json.loads(json.dumps(content))
-    category_id = js["category_id"]
+    category_id = request.args.get("category_id")
     requestPayload = {
         "type": "select",
         "args": {
