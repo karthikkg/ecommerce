@@ -662,7 +662,7 @@ def product_info():
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
 @hasura_examples.route("/displaybysubcategory")
 def displaybysubcategory():
-    subcategory_id = request.args.get("subcategory_id")
+    sub_category_id = request.args.get("sub_category_id")
     requestPayload = {
         "type": "select",
         "args": {
@@ -672,7 +672,7 @@ def displaybysubcategory():
             ],
             "where": {
                 "sub_category_id": {
-                    "$eq": subcategory_id
+                    "$eq": sub_category_id
                 }
             }
         }
