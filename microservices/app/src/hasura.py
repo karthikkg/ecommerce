@@ -96,7 +96,8 @@ def get_users():
 def signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    print("\n\n\nprint \n entered form correctly\n \n")
+    print("the js in signup is\n",js)
+    print("the js['data'] in signup is\n",js['data'])
     first_name = js['data']['first_name']#form.first_name.data 
     last_name =  js['data']['last_name']#form.last_name.data
     email = js['data']['email'] #form.email.data 
@@ -187,12 +188,13 @@ def signup():
 def seller_signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    print("\n\n\nprint \n entered form correctly\n \n")
-    first_name = js['first_name']#form.first_name.data 
-    last_name =  js['last_name']#form.last_name.data
-    email = js['email'] #form.email.data 
-    phone_number =  js['phone_number']#form.phone_number.data
-    password = js['password']#form.password.data
+    print("the js is\n",js)
+    print("the js['data'] is\n",,js['data'])
+    first_name = js['data']['first_name']#form.first_name.data 
+    last_name =  js['data']['last_name']#form.last_name.data
+    email = js['data']['email'] #form.email.data 
+    phone_number =  js['data']['phone_number']#form.phone_number.data
+    password = js['data']['password']#form.password.data
     print(first_name,last_name,email,phone_number,password)
     app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
 
