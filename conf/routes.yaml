@@ -170,7 +170,7 @@ app:
     upstreamServicePort: 80
     corsPolicy: allow_all
 
-app:
+ui:
   /:
     corsPolicy: allow_all
     upstreamService:
