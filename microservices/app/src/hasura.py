@@ -189,7 +189,7 @@ def seller_signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
     print("the js is\n",js)
-    print("the js['data'] is\n",,js['data'])
+    print("the js['data'] is\n",js['data'])
     first_name = js['data']['first_name']#form.first_name.data 
     last_name =  js['data']['last_name']#form.last_name.data
     email = js['data']['email'] #form.email.data 
