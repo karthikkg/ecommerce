@@ -345,8 +345,8 @@ def login():
     print(js)
 
     print("\n\n\nprint \n entered form correctly\n \n")
-    email = js['email']
-    password = js['password']
+    email = js['data']['email']
+    password = js['data']['password']
     app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
     import requests
@@ -441,8 +441,8 @@ def add_product():
     content = request.get_json()
     js = json.loads(json.dumps(content))
     if 'auth_token' in js:
-        auth_token=js['auth_token']
-        hasura_id= js['hasura_id']
+        auth_token=js['data']['auth_token']
+        hasura_id= js['data']['hasura_id']
         print(hasura_id)
         print('entered first if\n',hasura_id)
 
@@ -479,11 +479,11 @@ def add_product():
         print(resp.content)
         #if 'seller_id' in resp :
         print('enetered post\n')
-        product_name = js['product_name']
-        sub_category = js['category']
+        product_name = js['data']['product_name']
+        sub_category = js['data']['category']
         #print('category:\n',category)
-        price = js['price']
-        description = js['description']
+        price = js['data']['price']
+        description = js['data']['description']
         #print(description)
         file = request.files['filename']
         #print(file)
@@ -660,8 +660,15 @@ def product_info():
         images = resp.content.decode('utf-8')
         images = literal_eval(images)
         #images = resp.content
+        images_count = len(images)
+        for i in range(images_count):
+            image_name = 'product_image'+'_'+str(i)
+            if product_information['product_image'] == images[i][0]['url']:
+                product_information['image_name'] = images[i][0]['url']
 
-        return jsonify(product_information,images)
+
+
+        return jsonify(product_information)
 
 # Display products by sub category id
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
