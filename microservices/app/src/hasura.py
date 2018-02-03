@@ -663,7 +663,7 @@ def product_info():
         images_count = len(images)
         for i in range(images_count):
             image_name = 'product_image'+'_'+str(i)
-            if product_information['product_image'] == images[i][0]['url']:
+            if not product_information['product_image'] == images[i][0]['url']:
                 product_information['image_name'] = images[i][0]['url']
 
 
