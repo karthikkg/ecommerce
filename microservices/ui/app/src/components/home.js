@@ -5,7 +5,7 @@ export default class Home extends Component{
     constructor(){
         super();
         this.state={
-            products:
+           /* products:
             [
                 {
                   "first_image_url": "https://filestore.banner20.hasura-app.io/v1/file/2367e969-0ac1-43c2-9ff5-0c0ed1d2031e", 
@@ -64,7 +64,22 @@ export default class Home extends Component{
                   "product_url": "https://app.banner20.hasura-app.io/product?product_id=17"
                 }
               ]
-        }
+
+            */
+              products:[]
+          }
+    }
+    loadData(){
+      fetch("https://app.banner20.hasura-app.io/getproducts")
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          products: json,
+        });
+      });
+    }
+    componentDidMount(){
+      this.loadData();
     }
     render(){
         return (

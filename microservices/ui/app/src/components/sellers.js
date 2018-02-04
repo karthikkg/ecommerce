@@ -1,4 +1,6 @@
+
 import React from 'react';
+import {Link} from 'react-router-dom';
 import GridList, { GridListTile } from 'material-ui/GridList';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
@@ -7,7 +9,7 @@ import {saveOffline } from './config';
 import {authenticateUser, Userinfo, MakeUser} from './api';
 import ELlikartLogo from './ElikartLogo.png';
 import './Login_Signup.css';
-export default class Login_Signup extends React.Component{
+export default class Sellers extends React.Component{
 	constructor() {
 		super()
 		this.state = {
@@ -93,6 +95,9 @@ export default class Login_Signup extends React.Component{
 				<Hidden mdDown>
 				<GridList cols={2} cellHeight={800}>
 					<GridListTile cols={1} className="loginGrid">
+                                    <Link to='/auth' params={{ role:"sellers"}}>
+                                        <h4>Not a registered seller yet??? Come Here..</h4>
+									</Link>
 									<div className="center">
 										<img src={ELlikartLogo} className="responsive-img" alt="Elikart Logo "/>
 									</div>

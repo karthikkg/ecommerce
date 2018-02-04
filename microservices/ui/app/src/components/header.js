@@ -1,8 +1,5 @@
 import React,{ Component } from 'react';
 import {Link} from 'react-router-dom';
-import Hidden from 'material-ui/Hidden';
-import BottomNavigation, { BottomNavigationAction } from 'material-ui/BottomNavigation';
-import {Home, VerifiedUser, Check,Clear } from 'material-ui-icons';
 import BrandLogoElikart from './brandLogoElikart.png';
 
 export default class Header extends Component{
