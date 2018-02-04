@@ -1214,7 +1214,7 @@ def search():
     # resp.content contains the json response.
     string = resp.content.decode('utf-8')
     products_list = literal_eval(string)
-    print(str(products_list))
+    print(str(set(products_list)))
     product_list = []
     for i in products_list:
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['product_id'])
@@ -1252,4 +1252,4 @@ def search():
         prod_list = literal_eval(s)[0]
         prod_list['product_url'] = product_url
         product_list.append(prod_list)
-    return jsonify(set(product_list))
+    return jsonify(product_list)
