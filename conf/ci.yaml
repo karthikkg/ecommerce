@@ -33,7 +33,11 @@ ui:
       namespace: '{{ cluster.metadata.namespaces.user }}'
     upstreamServicePath: /
     upstreamServicePort: 80
-    dockerfile: microservices/ui/Dockerfile
-    path: microservices/ui
 
+
+
+    '{{ cluster.metadata.namespaces.user }}.ui':
+      ui:
+        dockerfile: microservices/ui/Dockerfile
+        path: microservices/ui
 
