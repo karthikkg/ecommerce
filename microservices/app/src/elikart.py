@@ -1003,7 +1003,7 @@ def place_order():
                 ],
                 "where": {
                     "hasura_id": {
-                        "$eq": 
+                        "$eq": hasura_id
                     }
                 }
             }
@@ -1015,7 +1015,7 @@ def place_order():
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
         string = resp.content.decode('utf-8')
@@ -1082,7 +1082,7 @@ def place_order():
                 }
 
                 # Make the query and store response in resp
-                resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+                resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
                 # resp.content contains the json response.
                 print(resp)
@@ -1112,7 +1112,7 @@ def place_order():
             }
 
             # Make the query and store response in resp
-            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
             # resp.content contains the json response.
         return jsonify({'order id': order_id})
@@ -1150,7 +1150,7 @@ def add_to_cart():
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
         return jsonify({'message':'added to cart Successfully'})
     else:
         return jsonify({'error':'you are not loggedin'})
