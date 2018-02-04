@@ -1159,7 +1159,7 @@ def add_to_cart():
         return jsonify({'error':'you are not loggedin'})
 
 
-@elikart.route('/search')
+@elikart.route('/search',methods=['GET','POST'])
 def search():
     content = request.get_json()
     js = json.loads(json.dumps(content))
