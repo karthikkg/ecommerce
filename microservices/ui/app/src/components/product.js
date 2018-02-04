@@ -89,7 +89,7 @@ class Product extends React.Component {
           <div className="col l5">
             <Paper >
               <div>
-                <img src={p.product_image} />
+                <img src={p.product_image} height="100%" width="100%"/>
               </div>
             </Paper>
           </div>
