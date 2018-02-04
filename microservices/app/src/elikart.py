@@ -1189,12 +1189,12 @@ def search():
                         }
                     },
                     {
-                        "product_name": {
+                        lower("product_name"): {
                             "$like": search_keyword
                         }
                     },
                     {
-                        "product_description": {
+                        lower("product_description"): {
                             "$like": search_keyword
                         }
                     }
@@ -1252,4 +1252,4 @@ def search():
         prod_list = literal_eval(s)[0]
         prod_list['product_url'] = product_url
         product_list.append(prod_list)
-    return jsonify(product_list)
+    return jsonify(set(product_list))
