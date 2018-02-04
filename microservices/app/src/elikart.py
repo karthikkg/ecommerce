@@ -1209,7 +1209,7 @@ def search():
     }
 
     # Make the query and store response in resp
-    resp = requests.request("POST", dataUurl, data=json.dumps(requestPayload), headers=headers)
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
     # resp.content contains the json response.
     string = resp.content.decode('utf-8')
