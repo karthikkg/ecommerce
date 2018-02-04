@@ -3,7 +3,7 @@ import { projectConfig, getSavedToken} from './config';
 
 
 const authenticateUser = (username, password, shouldSignUp) => {
-    var path = shouldSignUp ? '/signup' : '/login';
+    var path = shouldSignUp ? 'https://auth." + process.env.REACT_APP_CLUSTER_NAME + ".hasura-app.io/v1/signup' : 'https://auth." + process.env.REACT_APP_CLUSTER_NAME + ".hasura-app.io/v1/login';
     var requestOptions = {
         method: "POST",
         headers: {
@@ -12,7 +12,7 @@ const authenticateUser = (username, password, shouldSignUp) => {
         body: JSON.stringify({
           provider: "username",
           data: {
-            "username": username,
+            "email": email,
             "password": password
           }
         })
@@ -53,7 +53,7 @@ const authenticateUser = (username, password, shouldSignUp) => {
         "method": "POST",
         "headers": {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 9bda6d9c532211017a297151a08734ec43434f0e9e2709f8"
+            "Authorization": "Bearer "+ token
         }
     };
     var body = {
