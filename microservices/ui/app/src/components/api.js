@@ -12,7 +12,7 @@ const authenticateUser = (username, password, shouldSignUp) => {
         body: JSON.stringify({
           provider: "username",
           data: {
-            "email": email,
+            "username": username,
             "password": password
           }
         })
@@ -53,7 +53,7 @@ const authenticateUser = (username, password, shouldSignUp) => {
         "method": "POST",
         "headers": {
             "Content-Type": "application/json",
-            "Authorization": "Bearer "+ token
+            "Authorization": "Bearer 9bda6d9c532211017a297151a08734ec43434f0e9e2709f8"
         }
     };
     var body = {
