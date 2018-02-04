@@ -1162,6 +1162,7 @@ def add_to_cart():
 @elikart.route('/search',methods=['GET','POST'])
 def search():
     content = request.get_json()
+    print(content)
     js = json.loads(json.dumps(content))
     print('\n\nthe js is\n\n',js)
     print('\n\nthe js[data] is\n\n',js['data'])
