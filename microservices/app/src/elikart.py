@@ -1163,6 +1163,9 @@ def add_to_cart():
 def search():
     content = request.get_json()
     js = json.loads(json.dumps(content))
+    print('\n\nthe js is\n\n',js)
+    print('\n\nthe js[data] is\n\n',js['data'])
+    print('\n\nthe js[data][search] is\n\n',js['data']['search'])
     search_keyword = '%'+ js['data']['search']+'%'
     # This is the json payload for the query
     requestPayload = {
