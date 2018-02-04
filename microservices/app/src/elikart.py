@@ -986,7 +986,7 @@ def json_login():
     return resp.content
 
 
-@elikart.route('place_order')
+@elikart.route('/place_order')
 def place_order():
     content = request.get_json()
     js = json.loads(json.dumps(content))
@@ -1118,7 +1118,7 @@ def place_order():
         return jsonify({'order id': order_id})
     else:
         return jsonify({'error':'you are not loggedin'})
-@elikart.route('add_to_cart')
+@elikart.route('/add_to_cart')
 def add_to_cart():
     content = request.get_json()
     js = json.loads(json.dumps(content))
