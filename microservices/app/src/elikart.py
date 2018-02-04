@@ -801,7 +801,7 @@ def home():
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
         i['product_url'] = product_url
         product_list.append(i)
-    if 'auth_token' in js:
+    if js and 'auth_token' in js:
         hasura_id= js['data']['hasura_id']
         # This is the json payload for the query
         requestPayload = {
