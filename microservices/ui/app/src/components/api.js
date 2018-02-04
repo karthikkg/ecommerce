@@ -3,7 +3,7 @@ import { projectConfig, getSavedToken} from './config';
 
 
 const authenticateUser = (username, password, shouldSignUp) => {
-    var path = shouldSignUp ? 'https://auth." + process.env.REACT_APP_CLUSTER_NAME + ".hasura-app.io/v1/signup' : 'https://auth." + process.env.REACT_APP_CLUSTER_NAME + ".hasura-app.io/v1/login';
+    var path = shouldSignUp ? '/signup' : '/login';
     var requestOptions = {
         method: "POST",
         headers: {

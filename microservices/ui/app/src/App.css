@@ -16,6 +16,10 @@
   overflow: hidden;
   
 }
+.miniPic{
+  height: 50px;
+  width: 50px;
+}
 .productViewContainer{
   align-self: center;
   display: flex;
