@@ -45,7 +45,7 @@ app.config['DEBUG'] = True
 toolbar = DebugToolbarExtension(app)
 @elikart.route('/getinfo')
 def getinfo():
-    if 'auth_token' in session:
+    if 'data' in js and 'auth_token' in js['data']:
         print('entered _flashes')
 
     # This is the url to which the query is made
@@ -55,7 +55,7 @@ def getinfo():
         # Setting headers
         headers = {
             "Content-Type": "application/json",
-            "Authorization": 'Bearer ' +str(session['auth_token'])
+            "Authorization": 'Bearer ' +str(js['data']['auth_token'])
         }
 
         # Make the query and store response in resp
@@ -92,81 +92,30 @@ def signup():
     js = json.loads(json.dumps(content))
     print("the js in signup is\n",js)
     print("the js['data'] in signup is\n",js['data'])
-    first_name = js['data']['first_name']#form.first_name.data 
-    last_name =  js['data']['last_name']#form.last_name.data
-    email = js['data']['email'] #form.email.data 
-    phone_number =  js['data']['phone_number']#form.phone_number.data
-    password = js['data']['password']#form.password.data
-    print(first_name,last_name,email,phone_number,password)
-    app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
-
-    # This is the json payload for the query
-    requestPayload = {
-        "type": "select",
-        "args": {
-            "table": "user",
-            "columns": [
-                "user_email_address"
-            ],
-            "where": {
-                "user_email_address": {
-                    "$eq": email
-                }
-            }
-        }
-    }
-
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    # Make the query and store response in resp
-    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
-
-    # resp.content contains the json response.
-    if resp.json():
-        return jsonify({"error":"The Email is already taken as username"})
-    else:
-        authurl = "https://auth.banner20.hasura-app.io/v1/signup"
+    if 'data' in js:
+        first_name = js['data']['first_name']#form.first_name.data 
+        last_name =  js['data']['last_name']#form.last_name.data
+        email = js['data']['email'] #form.email.data 
+        phone_number =  js['data']['phone_number']#form.phone_number.data
+        password = js['data']['password']#form.password.data
+        print(first_name,last_name,email,phone_number,password)
+        app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
 
         # This is the json payload for the query
         requestPayload = {
-                        "provider": "username",
-                        "data": {
-                            "username": email,
-                            "password": password
-                        }
+            "type": "select",
+            "args": {
+                "table": "user",
+                "columns": [
+                    "user_email_address"
+                ],
+                "where": {
+                    "user_email_address": {
+                        "$eq": email
                     }
-
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
+                }
+            }
         }
-
-        # Make the query and store response in resp
-        resp = requests.request("POST", authurl, data=json.dumps(requestPayload), headers=headers)
-
-        # resp.content contains the json response.
-        print('\n\n')
-        print(resp.json())
-        print('\n\n')
-        hasura_user_id= resp.json()['hasura_id']
-        print('\n\nhasura_id: '+str(hasura_user_id)+'\n')
-
-        requestPayload = {
-                            "type": "insert",
-                            "args": {
-                                "table": "user",
-                                "objects": [{"user_first_name": first_name,
-                                            "user_last_name": last_name,
-                                            "user_email_address": email,
-                                            "phone_number": phone_number,
-                                            "password": password, "hasura_id": hasura_user_id}
-                                ]
-                            }
-                        }
 
         # Setting headers
         headers = {
@@ -175,62 +124,90 @@ def signup():
 
         # Make the query and store response in resp
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-        return resp.content
-    
+
+
+        # resp.content contains the json response.
+        if resp.json():
+            return jsonify({"error":"The Email is already taken as username"})
+        else:
+            authurl = "https://auth.banner20.hasura-app.io/v1/signup"
+
+            # This is the json payload for the query
+            requestPayload = {
+                            "provider": "username",
+                            "data": {
+                                "username": email,
+                                "password": password
+                            }
+                        }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", authurl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            print('\n\n')
+            print(resp.json())
+            print('\n\n')
+            hasura_user_id= resp.json()['hasura_id']
+            print('\n\nhasura_id: '+str(hasura_user_id)+'\n')
+
+            requestPayload = {
+                                "type": "insert",
+                                "args": {
+                                    "table": "user",
+                                    "objects": [{"user_first_name": first_name,
+                                                "user_last_name": last_name,
+                                                "user_email_address": email,
+                                                "phone_number": phone_number,
+                                                "password": password, "hasura_id": hasura_user_id}
+                                    ]
+                                }
+                            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+            return resp.content
+    else:
+        return jsonify({'error':'please enter all the fields required'})
 
 @elikart.route('/seller_signup',methods=['GET','POST'])
 def seller_signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    print("the js is\n",js)
-    print("the js['data'] is\n",js['data'])
-    first_name = js['data']['first_name']#form.first_name.data 
-    last_name =  js['data']['last_name']#form.last_name.data
-    email = js['data']['email'] #form.email.data 
-    phone_number =  js['data']['phone_number']#form.phone_number.data
-    password = js['data']['password']#form.password.data
-    print(first_name,last_name,email,phone_number,password)
-    app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
-
-    # This is the json payload for the query
-    requestPayload = {
-        "type": "select",
-        "args": {
-            "table": "seller",
-            "columns": [
-                "email_address"
-            ],
-            "where": {
-                "email_address": {
-                    "$eq": email
-                }
-            }
-        }
-    }
-
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    # Make the query and store response in resp
-    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
-
-    # resp.content contains the json response.
-    if resp.json():
-        return jsonify({"error":"The Email is already taken as username"})
-    else:
-        authurl = "https://auth.banner20.hasura-app.io/v1/signup"
+    if 'data' in js:
+        first_name = js['data']['first_name']#form.first_name.data 
+        last_name =  js['data']['last_name']#form.last_name.data
+        email = js['data']['email'] #form.email.data 
+        phone_number =  js['data']['phone_number']#form.phone_number.data
+        password = js['data']['password']#form.password.data
+        print(first_name,last_name,email,phone_number,password)
+        app.logger.debug('Submitted Successfully :-)\nName: '+first_name +'\nEmail : '+ email)
 
         # This is the json payload for the query
         requestPayload = {
-                        "provider": "username",
-                        "data": {
-                            "username": email,
-                            "password": password
-                        }
+            "type": "select",
+            "args": {
+                "table": "seller",
+                "columns": [
+                    "email_address"
+                ],
+                "where": {
+                    "email_address": {
+                        "$eq": email
                     }
+                }
+            }
+        }
 
         # Setting headers
         headers = {
@@ -238,27 +215,103 @@ def seller_signup():
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", authurl, data=json.dumps(requestPayload), headers=headers)
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
 
         # resp.content contains the json response.
-        print('\n\n')
-        print(resp.json())
-        print('\n\n')
-        hasura_user_id= resp.json()['hasura_id']
-        print('\n\nhasura_id: '+str(hasura_user_id)+'\n')
+        if resp.json():
+            return jsonify({"error":"The Email is already taken as username"})
+        else:
+            authurl = "https://auth.banner20.hasura-app.io/v1/signup"
 
-        requestPayload = {
-                            "type": "insert",
-                            "args": {
-                                "table": "seller",
-                                "objects": [{"first_name": first_name,
-                                            "last_name": last_name,
-                                            "email_address": email,
-                                            "phone_number": phone_number,
-                                            "password": password, "hasura_id": hasura_user_id}
-                                ]
+            # This is the json payload for the query
+            requestPayload = {
+                            "provider": "username",
+                            "data": {
+                                "username": email,
+                                "password": password
                             }
                         }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", authurl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            print('\n\n')
+            print(resp.json())
+            print('\n\n')
+            hasura_user_id= resp.json()['hasura_id']
+            print('\n\nhasura_id: '+str(hasura_user_id)+'\n')
+
+            requestPayload = {
+                                "type": "insert",
+                                "args": {
+                                    "table": "seller",
+                                    "objects": [{"first_name": first_name,
+                                                "last_name": last_name,
+                                                "email_address": email,
+                                                "phone_number": phone_number,
+                                                "password": password, "hasura_id": hasura_user_id}
+                                    ]
+                                }
+                            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            return resp.content
+    else:
+        return jsonify({'error':'please enter all the fields required'})
+
+
+@elikart.route('/seller_login',methods=['GET','POST'])
+def seller_login():
+    if 'data' in js and 'email' in js['data'] and 'password' in js['password']:
+
+        print("\n\n\nprint \n entered form correctly\n \n")
+        email = request.form['email'] #form.email.data #form.email.data
+        password = request.form['password']#form.password.data
+        app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
+
+
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "seller",
+                "columns": [
+                    "first_name",
+                    "last_name",
+                    "email_address",
+                    "password"
+                ],
+                "where": {
+                    "$and": [
+                        {
+                            "email_address": {
+                                "$eq": email
+                            }
+                        },
+                        {
+                            "password": {
+                                "$eq": password
+                            }
+                        }
+                    ]
+                }
+            }
+        }
 
         # Setting headers
         headers = {
@@ -269,118 +322,71 @@ def seller_signup():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        return resp.content
-    
+        print(resp.content)
 
-
-@elikart.route('/seller_login',methods=['GET','POST'])
-def seller_login():
-    
-    print("\n\n\nprint \n entered form correctly\n \n")
-    email = request.form['email'] #form.email.data #form.email.data
-    password = request.form['password']#form.password.data
-    app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
-
-
-    # This is the json payload for the query
-    requestPayload = {
-        "type": "select",
-        "args": {
-            "table": "seller",
-            "columns": [
-                "first_name",
-                "last_name",
-                "email_address",
-                "password"
-            ],
-            "where": {
-                "$and": [
-                    {
-                        "email_address": {
-                            "$eq": email
-                        }
-                    },
-                    {
-                        "password": {
-                            "$eq": password
-                        }
-                    }
-                ]
-            }
-        }
-    }
-
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    # Make the query and store response in resp
-    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
-    # resp.content contains the json response.
-    print(resp.content)
-
-     # resp.content contains the json response.
-    if resp.json():
-        return resp.content
+         # resp.content contains the json response.
+        if resp.json():
+            return resp.content
+        else:
+            return jsonify({"error":"Invalid Email/Password"})
     else:
-        return jsonify({"error":"Invalid Email/Password"})
+        return jsonify({'error':'please enter all the fields required'})
     
 
 @elikart.route('/login',methods=['GET','POST'])
 def login():
     #form = seller_loginForm()
-
-
     content = request.get_json()
     print(content)
     js = json.loads(json.dumps(content))
     print(js)
+    if 'data' in js and 'email' in js['data'] and 'password' in js['password']:
 
-    print("\n\n\nprint \n entered form correctly\n \n")
-    email = js['data']['email']
-    password = js['data']['password']
-    app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
+        print("\n\n\nprint \n entered form correctly\n \n")
+        email = js['data']['email']
+        password = js['data']['password']
+        app.logger.debug('Submitted Successfully :-)\n '+'\nEmail : '+ email)
 
-    import requests
-    # This is the url to which the query is made
-    url = "https://auth.banner20.hasura-app.io/v1/login"
+        import requests
+        # This is the url to which the query is made
+        url = "https://auth.banner20.hasura-app.io/v1/login"
 
-    # This is the json payload for the query
-    requestPayload = {
-        "provider": "username",
-        "data": {
-            "username": email,
-            "password": password
+        # This is the json payload for the query
+        requestPayload = {
+            "provider": "username",
+            "data": {
+                "username": email,
+                "password": password
+            }
         }
-    }
 
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-    # Make the query and store response in resp
-    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
-    #response = make_response(render_template('index.html'))
-    #string = resp.content.decode('utf-8')
-    #json_obj = json.loads(string)
-    #print(json_obj)
-    #session_tokens = json_obj
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        #response = make_response(render_template('index.html'))
+        #string = resp.content.decode('utf-8')
+        #json_obj = json.loads(string)
+        #print(json_obj)
+        #session_tokens = json_obj
 
-    #session_tokens = resp.content.decode('utf8')
-    #for i in session_tokens:
-        #session[i] = session_tokens[i]
+        #session_tokens = resp.content.decode('utf8')
+        #for i in session_tokens:
+            #session[i] = session_tokens[i]
 
 
-    #response.set_cookie('age', b'26')
-    # resp.content contains the json response.
-    #print(resp.content)
-    if resp.json():
-        return resp.content
+        #response.set_cookie('age', b'26')
+        # resp.content contains the json response.
+        #print(resp.content)
+        if resp.json():
+            return resp.content
+        else:
+            return jsonify({"error":"Invalid Email/Password"})
     else:
-        return jsonify({"error":"Invalid Email/Password"})
+        return jsonify({'error':'please enter all the fields required'})
     
 
 
@@ -434,7 +440,7 @@ def getPhoto_url(file):
 def add_product():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'auth_token' in js['data']:
+    if 'data' in js and 'auth_token' in js['data']:
         auth_token=js['data']['auth_token']
         hasura_id= js['data']['hasura_id']
         print(hasura_id)
@@ -801,7 +807,7 @@ def home():
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
         i['product_url'] = product_url
         product_list.append(i)
-    if js and 'auth_token' in js:
+    if 'data' in js and 'auth_token' in js:
         hasura_id= js['data']['hasura_id']
         # This is the json payload for the query
         requestPayload = {
@@ -913,9 +919,6 @@ def editProfile():
 """
 @elikart.route('/getproducts')
 def products():
-    content = request.get_json()
-    js = json.loads(json.dumps(content))
-
     # This is the json payload for the query
     requestPayload = {
         "type": "select",
@@ -990,7 +993,7 @@ def json_login():
 def place_order():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'auth_token' in js['data']:
+    if 'data' in js and 'auth_token' in js['data']:
         auth_token=js['data']['auth_token']
         hasura_id= js['data']['hasura_id']
 
@@ -1122,7 +1125,7 @@ def place_order():
 def add_to_cart():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'auth_token' in js['data']:
+    if js and 'auth_token' in js['data']:
         auth_token=js['data']['auth_token']
         hasura_id= js['data']['hasura_id']
         product = js['data'][0]
@@ -1154,3 +1157,94 @@ def add_to_cart():
         return jsonify({'message':'added to cart Successfully'})
     else:
         return jsonify({'error':'you are not loggedin'})
+
+
+@elikart.route('/search')
+def search():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    search_keyword = '%'+ js['data']['search']+'%'
+    # This is the json payload for the query
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "complete_product_info",
+            "columns": [
+                "product_id"
+            ],
+            "where": {
+                "$or": [
+                    {
+                        "category_name": {
+                            "$like": search_keyword
+                        }
+                    },
+                    {
+                        "sub_category_name": {
+                            "$like": search_keyword
+                        }
+                    },
+                    {
+                        "product_name": {
+                            "$like": search_keyword
+                        }
+                    },
+                    {
+                        "product_description": {
+                            "$like": search_keyword
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # Make the query and store response in resp
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+    # resp.content contains the json response.
+    string = resp.content.decode('utf-8')
+    products_list = literal_eval(string)
+    product_list = []
+    for i in products_list:
+        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
+        # This is the json payload for the query
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "product",
+                "columns": [
+                    "id",
+                    "name",
+                    "price",
+                    "first_image_url"
+                ],
+                "where": {
+                    "id": {
+                        "$eq": i['id']
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
+        s = resp.content.decode('utf-8')
+        prod_list = literal_eval(s)
+        prod_list['product_url'] = product_url
+        product_list.append(prod_list)
+    return jsonify(product_list)
