@@ -41,30 +41,14 @@ class Product extends React.Component {
               <div className="col s4">
                 <Paper zDepth={1}  >
                   <div>
-                    <img style="max-height:100%;max-width:100%;" src={p.product_image_1} alt={p.product_name} />
+                    <img src={p.product_image_1} alt={p.product_name} />
                   </div>
                 </Paper>
               </div>
               <div className="col s4">
                 <Paper zDepth={1}  >
                   <div >
-                    <img style="max-height:100%;max-width:100%;" src={p.product_image_1} alt={p.product_name} />
-                  </div>
-                </Paper>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s4">
-                <Paper zDepth={1}  >
-                  <div >
-                    <img style="max-height:100%;max-width:100%;" src={p.product_image_2} alt={p.product_name} />
-                  </div>
-                </Paper>
-              </div>
-              <div className="col s4">
-                <Paper zDepth={1}  >
-                  <div >
-                    <img style="max-height:100%;max-width:100%;" src={p.product_image_3} alt={p.product_name} />
+                    <img src={p.product_image_1} alt={p.product_name} />
                   </div>
                 </Paper>
               </div>
@@ -73,14 +57,30 @@ class Product extends React.Component {
               <div className="col s4">
                 <Paper zDepth={1}  >
                   <div >
-                    <img style="max-height:100%;max-width:100%;" src={p.product_image} alt={p.product_name} />
+                    <img src={p.product_image_2} alt={p.product_name} />
                   </div>
                 </Paper>
               </div>
               <div className="col s4">
                 <Paper zDepth={1}  >
                   <div >
-                    <img style="max-height:100%;max-width:100%;" src={p.product_image_1} alt={p.product_name} />
+                    <img src={p.product_image_3} alt={p.product_name} />
+                  </div>
+                </Paper>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col s4">
+                <Paper zDepth={1}  >
+                  <div >
+                    <img src={p.product_image} alt={p.product_name} />
+                  </div>
+                </Paper>
+              </div>
+              <div className="col s4">
+                <Paper zDepth={1}  >
+                  <div >
+                    <img src={p.product_image_1} alt={p.product_name} />
                   </div>
                 </Paper>
               </div>
@@ -89,7 +89,7 @@ class Product extends React.Component {
           <div className="col l5">
             <Paper >
               <div>
-                <img style="max-height:100%;max-width:100%;" src={p.product_image} />
+                <img src={p.product_image} />
               </div>
             </Paper>
           </div>
