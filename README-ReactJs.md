@@ -19,7 +19,7 @@ Here the aim of the app is ~~fully featured~~ to have minimum and mandatory feat
     * Willson V                 (vermawillson@gmail.com)
 > Backend (Python-Flask)
     
-    * Karthik Kumar Gajula      (karthikg.myb@gmail.com)
+    * Gajula Karthik Kumar       (karthikg.myb@gmail.com)
 
 ## Work Done
 
@@ -40,7 +40,7 @@ _Responsive Content_
 *  **[Partially finished]** Product Page
 
 ### Backend
-> Karthik Kumar Gajula 
+> Gajula Karthik Kumar 
 
  *   Entire APIs Developed 
 
