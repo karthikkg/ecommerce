@@ -1217,7 +1217,7 @@ def search():
     print(str(products_list))
     product_list = []
     for i in products_list:
-        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
+        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['product_id'])
         # This is the json payload for the query
         # This is the json payload for the query
         requestPayload = {
@@ -1232,7 +1232,7 @@ def search():
                 ],
                 "where": {
                     "id": {
-                        "$eq": i['id']
+                        "$eq": i['product_id']
                     }
                 }
             }
