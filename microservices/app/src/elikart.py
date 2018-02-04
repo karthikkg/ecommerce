@@ -35,21 +35,15 @@ if CLUSTER_NAME is None:
 
     """)
 
-if PRODUCTION_ENV == "true":
-    # set dataUrl as internal url if PRODUCTION_ENV is true
-    # note that internal url has admin permissions
-    dataUrl = "https://data." + "banner20" + ".hasura-app.io/v1/query"
-else:
-    # for local development, contact the cluster via external url
-    dataUrl = "https://data." + "banner20" + ".hasura-app.io/v1/query"
+dataUrl = "https://data." + "banner20" + ".hasura-app.io/v1/query"
 
-hasura_examples = Blueprint('hasura_examples', __name__)
+elikart = Blueprint('elikart', __name__)
 
 app.config['SECRET_KEY'] = b'\xb7\xd8\xa0\x8b\x82\r\xa4W\xb00\x13s\x00\x1e\xd6hT\xc3F@3\xff<\x1e'
 app.config['DEBUG'] = True
 
 toolbar = DebugToolbarExtension(app)
-@hasura_examples.route('/getinfo')
+@elikart.route('/getinfo')
 def getinfo():
     if 'auth_token' in session:
         print('entered _flashes')
@@ -72,7 +66,7 @@ def getinfo():
     else:
         return 'you are not logged in'
 
-@hasura_examples.route("/get_users")
+@elikart.route("/get_users")
 def get_users():
     query = {
         "type": "select",
@@ -92,7 +86,7 @@ def get_users():
     print(json.dumps(data))
     return jsonify(data=data)
 
-@hasura_examples.route('/signup',methods=['GET','POST'])
+@elikart.route('/signup',methods=['GET','POST'])
 def signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
@@ -184,7 +178,7 @@ def signup():
         return resp.content
     
 
-@hasura_examples.route('/seller_signup',methods=['GET','POST'])
+@elikart.route('/seller_signup',methods=['GET','POST'])
 def seller_signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
@@ -279,7 +273,7 @@ def seller_signup():
     
 
 
-@hasura_examples.route('/seller_login',methods=['GET','POST'])
+@elikart.route('/seller_login',methods=['GET','POST'])
 def seller_login():
     
     print("\n\n\nprint \n entered form correctly\n \n")
@@ -334,7 +328,7 @@ def seller_login():
         return jsonify({"error":"Invalid Email/Password"})
     
 
-@hasura_examples.route('/login',methods=['GET','POST'])
+@elikart.route('/login',methods=['GET','POST'])
 def login():
     #form = seller_loginForm()
 
@@ -390,7 +384,7 @@ def login():
     
 
 
-@hasura_examples.route('/logout', methods=['GET','POST'])
+@elikart.route('/logout', methods=['GET','POST'])
 def logout():
     # This is the url to which the query is made
     url = "https://auth.banner20.hasura-app.io/v1/user/logout"
@@ -436,11 +430,11 @@ def getPhoto_url(file):
     return False
 
 
-@hasura_examples.route('/add_product',methods=['GET','POST'])
+@elikart.route('/add_product',methods=['GET','POST'])
 def add_product():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'auth_token' in js:
+    if 'auth_token' in js['data']:
         auth_token=js['data']['auth_token']
         hasura_id= js['data']['hasura_id']
         print(hasura_id)
@@ -601,7 +595,7 @@ def add_product():
 
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
-@hasura_examples.route("/product")
+@elikart.route("/product")
 def product_info():
         product_id = request.args.get("product_id")
         requestPayload = {
@@ -672,7 +666,7 @@ def product_info():
 
 # Display products by sub category id
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
-@hasura_examples.route("/displaybysubcategory")
+@elikart.route("/displaybysubcategory")
 def displaybysubcategory():
     sub_category_id = request.args.get("sub_category_id")
     requestPayload = {
@@ -704,7 +698,7 @@ def displaybysubcategory():
         
 # Display products by category id
 # url example : https://app.banner20.hasura-app.io/displaybycategory?category_id=1
-@hasura_examples.route("/displaybycategory")
+@elikart.route("/displaybycategory")
 def displaybycategory():
     category_id = request.args.get("category_id")
     requestPayload = {
@@ -735,7 +729,7 @@ def displaybycategory():
     return jsonify(products_by_category)
 
 
-@hasura_examples.route('/')
+@elikart.route('/')
 def home():
     # This is the json payload for the query
     content = request.get_json()
@@ -880,7 +874,7 @@ def home():
     else:
         return jsonify(category_and_sub_category_list,product_list)
 """
-@hasura_examples.route('/account/profile')
+@elikart.route('/account/profile')
 def profile():
     if 'hasura_id' in session:
 
@@ -913,11 +907,11 @@ def profile():
         return "please login"
 """
 """
-@hasura_examples.route("/account/profile/edit")
+@elikart.route("/account/profile/edit")
 def editProfile():
     if 'hasura_id' in session:
 """
-@hasura_examples.route('/getproducts')
+@elikart.route('/getproducts')
 def products():
     content = request.get_json()
     js = json.loads(json.dumps(content))
@@ -963,7 +957,7 @@ def products():
     return jsonify(product_list)
 
 
-@hasura_examples.route('/json_login', methods=['POST'])
+@elikart.route('/json_login', methods=['POST'])
 def json_login():
     content = request.get_json()
     js = json.loads(json.dumps(content))
@@ -990,3 +984,173 @@ def json_login():
     resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
 
     return resp.content
+
+
+@elikart.route('place_order')
+def place_order():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if 'auth_token' in js['data']:
+        auth_token=js['data']['auth_token']
+        hasura_id= js['data']['hasura_id']
+
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "user",
+                "columns": [
+                    "user_id"
+                ],
+                "where": {
+                    "hasura_id": {
+                        "$eq": 
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        string = resp.content.decode('utf-8')
+        user_id = literal_eval(string)['id']
+        
+
+        # This is the json payload for the query
+        requestPayload = {
+            "type": "insert",
+            "args": {
+                "table": "order",
+                "objects": [
+                    {
+                        "customer_id": customer_id,
+                        "expected_delivery_date_time": expected_delivery_date_time,
+                        "total_order_price": total_order_price,
+                        "ordered_address_id": address_id
+                    }
+                ],
+                "returning": [
+                    "id"
+                ]
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json",
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        string = resp.content.decode('utf-8')
+        order_id = literal_eval(string)['id']
+
+        content = request.get_json()
+        js = json.loads(json.dumps(content))
+
+        if 'cart' in js['data']:
+            cart = js['data']['cart']
+            for product in cart:
+                requestPayload = {
+                    "type": "insert",
+                    "args": {
+                        "table": "items",
+                        "objects": [
+                            {
+                                "product_id": cart['product_id'],
+                                "seller_id": cart['seller_id'],
+                                "quantity": cart['quantity'],
+                                "order_id": order_id,
+                                "product_price": cart['product_price'],
+                                "product_quantity_price": cart['product_price']*cart['quantity']
+                            }
+                        ]
+                    }
+                }
+
+                # Setting headers
+                headers = {
+                    "Content-Type": "application/json"
+                }
+
+                # Make the query and store response in resp
+                resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+                # resp.content contains the json response.
+                print(resp)
+        else:
+            product = js['data'][0]
+            quantity = js['data']['quantity']
+            requestPayload = {
+                "type": "insert",
+                "args": {
+                    "table": "items",
+                    "objects": [
+                        {
+                            "product_id": product['id'],
+                            "seller_id": product['seller_id'],
+                            "quantity": quantity,
+                            "order_id": order_id,
+                            "product_price": product['price'],
+                            "product_quantity_price": product['price']*quantity
+                        }
+                    ]
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+        return jsonify({'order id': order_id})
+    else:
+        return jsonify({'error':'you are not loggedin'})
+@elikart.route('add_to_cart')
+def add_to_cart():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if 'auth_token' in js['data']:
+        auth_token=js['data']['auth_token']
+        hasura_id= js['data']['hasura_id']
+        product = js['data'][0]
+        quantity = js['data']['quantity']
+        requestPayload = {
+            "type": "insert",
+            "args": {
+                "table": "items",
+                "objects": [
+                    {
+                        "product_id": product['id'],
+                        "seller_id": product['seller_id'],
+                        "quantity": quantity,
+                        "order_id": order_id,
+                        "product_price": product['price'],
+                        "product_quantity_price": product['price']*quantity
+                    }
+                ]
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        return jsonify({'message':'added to cart Successfully'})
+    else:
+        return jsonify({'error':'you are not loggedin'})
