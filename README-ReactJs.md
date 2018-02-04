@@ -63,3 +63,30 @@ _Responsive Content_
 ![Desktop view Products][productFull]
 ![Mobile view Products][productMobile]
 
+
+
+## Backend APIs
+
+-   Login/Sign up APIs
+	> https://app.banner20.hasura-app.io/login
+	> https://app.banner20.hasura-app.io/signup
+	> https://app.banner20.hasura-app.io/seller_signup
+ -  API to List products being sold and filter by category 
+	> https://app.banner20.hasura-app.io/displaybycategory?category_id=2
+ -   API to List products being sold and filter by sub category  
+       > https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
+	
+ -    API to List products by id 
+      > https://app.banner20.hasura-app.io/product?product_id=2
+
+-   API to List products by search using keywords in category, sub category, product name and description
+      > https://app.banner20.hasura-app.io/search
+
+-   API to add products by seller
+      > https://app.banner20.hasura-app.io/add_product 
+
+-   API to add multiple products to their shopping cart
+     > https://app.banner20.hasura-app.io/add_to_cart
+
+- API to place an order
+     > https://app.banner20.hasura-app.io/place_order
