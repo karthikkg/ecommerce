@@ -1214,6 +1214,7 @@ def search():
     # resp.content contains the json response.
     string = resp.content.decode('utf-8')
     products_list = literal_eval(string)
+    print(str(products_list))
     product_list = []
     for i in products_list:
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
