@@ -1189,12 +1189,12 @@ def search():
                         }
                     },
                     {
-                        lower("product_name"): {
+                        "product_name": {
                             "$like": search_keyword
                         }
                     },
                     {
-                        lower("product_description"): {
+                        "product_description": {
                             "$like": search_keyword
                         }
                     }
