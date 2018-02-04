@@ -1249,7 +1249,7 @@ def search():
         # resp.content contains the json response.
         print(resp.content)
         s = resp.content.decode('utf-8')
-        prod_list = literal_eval(s)
+        prod_list = literal_eval(s)[0]
         prod_list['product_url'] = product_url
         product_list.append(prod_list)
     return jsonify(product_list)
