@@ -6,6 +6,7 @@ from ast import literal_eval
 from flask import Blueprint, jsonify
 from flask import  render_template, url_for, request, redirect, flash, make_response, abort,session
 from logging import DEBUG
+import datetime
 from src import app
 from flask_wtf import Form
 from wtforms.fields import StringField, PasswordField, FileField
@@ -1253,3 +1254,237 @@ def search():
         prod_list['product_url'] = product_url
         product_list.append(prod_list)
     return jsonify(product_list)
+
+@elikart.route('/viewCart')
+def view_cart():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "user",
+                "columns": [
+                    "user_id"
+                ],
+                "where": {
+                    "hasura_id": {
+                        "$eq": js['data']['hasura_id']
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        s = resp.content.decode('utf-8')
+        user_id = literal_eval(s)[0]
+        
+        if user_id:
+            requestPayload = {
+                "type": "select",
+                "args": {
+                    "table": "cart",
+                    "columns": [
+                        "*"
+                    ],
+                    "where": {
+                        "customer_id": {
+                            "$eq": user_id
+                        }
+                    }
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            return resp.content
+
+@elikart.route('/editCart',methods=['GET','POST','PUT'])
+def edit_cart():
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "user",
+                "columns": [
+                    "user_id"
+                ],
+                "where": {
+                    "hasura_id": {
+                        "$eq": js['data']['hasura_id']
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        s = resp.content.decode('utf-8')
+        user_id = literal_eval(s)
+        if user_id :
+            user_id = user_id[0]['user_id']
+        
+        if user_id:
+            requestPayload = {
+                "type": "select",
+                "args": {
+                    "table": "cart",
+                    "columns": [
+                        "*"
+                    ],
+                    "where": {
+                        "customer_id": {
+                            "$eq": user_id
+                        }
+                    }
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            return resp.content
+
+        if js['data']['id'] and not js['data']['quantity']:
+            requestPayload = {
+                "type": "update",
+                "args": {
+                    "table": "cart",
+                    "where": {
+                        "id": {
+                            "$eq": js['data']['id']
+                        }
+                    },
+                    "$set": {
+                        "created_at": datetime.datetime.now(),
+                        "quantity": js['data']['quantity'],
+                    }
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            print(resp.content)
+        elif js['data']['id'] and js['data']['quantity'] == 0:
+            # This is the json payload for the query
+            requestPayload = {
+                "type": "delete",
+                "args": {
+                    "table": "cart",
+                    "where": {
+                        "id": {
+                            "$eq": js['data']['id']
+                        }
+                    }
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            print(resp.content)
+
+
+@elikart.route('view_orders')
+def view_orders():    
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "user",
+                "columns": [
+                    "user_id"
+                ],
+                "where": {
+                    "hasura_id": {
+                        "$eq": js['data']['hasura_id']
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        s = resp.content.decode('utf-8')
+        user_id = literal_eval(s)
+        if user_id :
+            user_id = user_id[0]['user_id']
+    if user_id:
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "order",
+                "columns": [
+                    "*"
+                ],
+                "where": {
+                    "customer_id": {
+                        "$eq": user_id
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        return resp.content
+
