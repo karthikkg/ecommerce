@@ -69,7 +69,9 @@ _Responsive Content_
 
 -   Login/Sign up APIs
 	> https://app.banner20.hasura-app.io/login
+	
 	> https://app.banner20.hasura-app.io/signup
+	
 	> https://app.banner20.hasura-app.io/seller_signup
  -  API to List products being sold and filter by category 
 	> https://app.banner20.hasura-app.io/displaybycategory?category_id=2
