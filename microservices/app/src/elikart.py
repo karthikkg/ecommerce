@@ -91,9 +91,7 @@ def get_users():
 def signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    print("the js in signup is\n",js)
-    print("the js['data'] in signup is\n",js['data'])
-    if 'data' in js:
+    if js and 'data' in js:
         first_name = js['data']['first_name']#form.first_name.data 
         last_name =  js['data']['last_name']#form.last_name.data
         email = js['data']['email'] #form.email.data 
@@ -185,7 +183,7 @@ def signup():
 def seller_signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'data' in js:
+    if js and 'data' in js:
         first_name = js['data']['first_name']#form.first_name.data 
         last_name =  js['data']['last_name']#form.last_name.data
         email = js['data']['email'] #form.email.data 
@@ -278,7 +276,7 @@ def seller_signup():
 
 @elikart.route('/seller_login',methods=['GET','POST'])
 def seller_login():
-    if 'data' in js and 'email' in js['data'] and 'password' in js['password']:
+    if js and 'data' in js and 'email' in js['data'] and 'password' in js['password']:
 
         print("\n\n\nprint \n entered form correctly\n \n")
         email = request.form['email'] #form.email.data #form.email.data
@@ -341,7 +339,7 @@ def login():
     print(content)
     js = json.loads(json.dumps(content))
     print(js)
-    if 'data' in js and 'email' in js['data'] and 'password' in js['password']:
+    if js and 'data' in js and 'email' in js['data'] and 'password' in js['password']:
 
         print("\n\n\nprint \n entered form correctly\n \n")
         email = js['data']['email']
@@ -441,7 +439,7 @@ def getPhoto_url(file):
 def add_product():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'data' in js and 'auth_token' in js['data']:
+    if js and 'data' in js and 'auth_token' in js['data']:
         auth_token=js['data']['auth_token']
         hasura_id= js['data']['hasura_id']
         print(hasura_id)
@@ -808,7 +806,7 @@ def home():
         product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['id'])
         i['product_url'] = product_url
         product_list.append(i)
-    if 'data' in js and 'auth_token' in js:
+    if js and 'data' in js and 'auth_token' in js:
         hasura_id= js['data']['hasura_id']
         # This is the json payload for the query
         requestPayload = {
@@ -994,7 +992,7 @@ def json_login():
 def place_order():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'data' in js and 'auth_token' in js['data']:
+    if js and 'data' in js and 'auth_token' in js['data']:
         auth_token=js['data']['auth_token']
         hasura_id= js['data']['hasura_id']
 
@@ -1165,76 +1163,42 @@ def search():
     content = request.get_json()
     print(content)
     js = json.loads(json.dumps(content))
-    print('\n\nthe js is\n\n',js)
-    print('\n\nthe js[data] is\n\n',js['data'])
-    print('\n\nthe js[data][search] is\n\n',js['data']['search'])
-    search_keyword = '%'+ js['data']['search']+'%'
-    # This is the json payload for the query
-    requestPayload = {
-        "type": "select",
-        "args": {
-            "table": "complete_product_info",
-            "columns": [
-                "product_id"
-            ],
-            "where": {
-                "$or": [
-                    {
-                        "category_name": {
-                            "$like": search_keyword
-                        }
-                    },
-                    {
-                        "sub_category_name": {
-                            "$like": search_keyword
-                        }
-                    },
-                    {
-                        "product_name": {
-                            "$like": search_keyword
-                        }
-                    },
-                    {
-                        "product_description": {
-                            "$like": search_keyword
-                        }
-                    }
-                ]
-            }
-        }
-    }
-
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    # Make the query and store response in resp
-    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
-
-    # resp.content contains the json response.
-    string = resp.content.decode('utf-8')
-    products_list = literal_eval(string)
-    print(str(products_list))
-    product_list = []
-    for i in products_list:
-        product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['product_id'])
-        # This is the json payload for the query
+    if js:
+        print('\n\nthe js is\n\n',js)
+        print('\n\nthe js[data] is\n\n',js['data'])
+        print('\n\nthe js[data][search] is\n\n',js['data']['search'])
+        search_keyword = '%'+ js['data']['search']+'%'
         # This is the json payload for the query
         requestPayload = {
             "type": "select",
             "args": {
-                "table": "product",
+                "table": "complete_product_info",
                 "columns": [
-                    "id",
-                    "name",
-                    "price",
-                    "first_image_url"
+                    "product_id"
                 ],
                 "where": {
-                    "id": {
-                        "$eq": i['product_id']
-                    }
+                    "$or": [
+                        {
+                            "category_name": {
+                                "$like": search_keyword
+                            }
+                        },
+                        {
+                            "sub_category_name": {
+                                "$like": search_keyword
+                            }
+                        },
+                        {
+                            "product_name": {
+                                "$like": search_keyword
+                            }
+                        },
+                        {
+                            "product_description": {
+                                "$like": search_keyword
+                            }
+                        }
+                    ]
                 }
             }
         }
@@ -1248,18 +1212,55 @@ def search():
         resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
         # resp.content contains the json response.
-        print(resp.content)
-        s = resp.content.decode('utf-8')
-        prod_list = literal_eval(s)[0]
-        prod_list['product_url'] = product_url
-        product_list.append(prod_list)
-    return jsonify(product_list)
+        string = resp.content.decode('utf-8')
+        products_list = literal_eval(string)
+        print(str(products_list))
+        product_list = []
+        for i in products_list:
+            product_url = 'https://app.banner20.hasura-app.io/product?product_id='+str(i['product_id'])
+            # This is the json payload for the query
+            # This is the json payload for the query
+            requestPayload = {
+                "type": "select",
+                "args": {
+                    "table": "product",
+                    "columns": [
+                        "id",
+                        "name",
+                        "price",
+                        "first_image_url"
+                    ],
+                    "where": {
+                        "id": {
+                            "$eq": i['product_id']
+                        }
+                    }
+                }
+            }
+
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+            # resp.content contains the json response.
+            print(resp.content)
+            s = resp.content.decode('utf-8')
+            prod_list = literal_eval(s)[0]
+            prod_list['product_url'] = product_url
+            product_list.append(prod_list)
+        return jsonify(product_list)
+    else:
+        return jsonify({'error':'enter a search keyword'})
 
 @elikart.route('/viewCart')
 def view_cart():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
+    if js and 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
         requestPayload = {
             "type": "select",
             "args": {
@@ -1318,7 +1319,7 @@ def view_cart():
 def edit_cart():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
+    if js and 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
         requestPayload = {
             "type": "select",
             "args": {
@@ -1428,11 +1429,11 @@ def edit_cart():
             print(resp.content)
 
 
-@elikart.route('view_orders')
+@elikart.route('/view_orders')
 def view_orders():    
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
+    if js and 'data' in js and 'auth_token' in js['data'] and 'hasura_id' in js['data']:
         requestPayload = {
             "type": "select",
             "args": {
