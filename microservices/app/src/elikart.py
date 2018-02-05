@@ -1431,7 +1431,7 @@ def edit_cart():
             print(resp.content)
 
 
-@elikart.route('view_orders')
+@elikart.route('/view_orders')
 def view_orders():    
     content = request.get_json()
     js = json.loads(json.dumps(content))
