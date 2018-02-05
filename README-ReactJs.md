@@ -77,7 +77,7 @@ _Responsive Content_
        > https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
 	
  -    API to List products by id 
-      > https://app.banner20.hasura-app.io/product?product_id=2
+      > https://app.banner20.hasura-app.io/product?product_id=10
 
 -   API to List products by search using keywords in category, sub category, product name and description
       > https://app.banner20.hasura-app.io/search
