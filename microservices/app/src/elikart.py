@@ -91,8 +91,6 @@ def get_users():
 def signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    print("the js in signup is\n",js)
-    print("the js['data'] in signup is\n",js['data'])
     if js and 'data' in js:
         first_name = js['data']['first_name']#form.first_name.data 
         last_name =  js['data']['last_name']#form.last_name.data
