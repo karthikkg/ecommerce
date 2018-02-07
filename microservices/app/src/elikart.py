@@ -339,7 +339,7 @@ def login():
     print(content)
     js = json.loads(json.dumps(content))
     print(js)
-    if js and 'data' in js and 'email' in js['data'] and 'password' in js['data']['password']:
+    if js and 'data' in js and 'email' in js['data'] and 'password' in js['data']:
 
         print("\n\n\nprint \n entered form correctly\n \n")
         email = js['data']['email']
