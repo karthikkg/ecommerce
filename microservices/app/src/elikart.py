@@ -381,7 +381,7 @@ def login():
         # resp.content contains the json response.
         #print(resp.content)
         if resp.json():
-            return session
+            return jsonify(session)
         else:
             return jsonify({"error":"Invalid Email/Password"})
     else:
@@ -394,6 +394,7 @@ def logout():
     content = request.get_json()
     js = json.loads(json.dumps(content))
     if js and 'data' in js and 'auth_token' in js['data']:
+        auth_token = js['data']['auth_token']
 
         # This is the url to which the query is made
         url = "https://auth.banner20.hasura-app.io/v1/user/logout"
@@ -402,14 +403,19 @@ def logout():
         # Setting headers
         headers = {
             "Content-Type": "application/json"
+            "Authorization": 'Bearer ' + auth_token
         }
 
         # Make the query and store response in resp
         resp = requests.request("POST", url, headers=headers)
+        
+        
+        session['auth_token'] = 'None'
+        session['hasura_id'] = 'None'
 
         # resp.content contains the json response.
         print(resp.content)
-        return resp.content
+        return jsonify(session)
     else:
         return jsonify({'error':'no session information found'})
 
