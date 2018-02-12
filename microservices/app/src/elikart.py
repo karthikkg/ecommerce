@@ -372,16 +372,16 @@ def login():
         #print(json_obj)
         #session_tokens = json_obj
 
-        #session_tokens = resp.content.decode('utf8')
-        #for i in session_tokens:
-            #session[i] = session_tokens[i]
+        session_tokens = resp.content.decode('utf8')
+        for i in session_tokens:
+            session[i] = session_tokens[i]
 
 
         #response.set_cookie('age', b'26')
         # resp.content contains the json response.
         #print(resp.content)
         if resp.json():
-            return resp.content
+            return session
         else:
             return jsonify({"error":"Invalid Email/Password"})
     else:
@@ -391,21 +391,28 @@ def login():
 
 @elikart.route('/logout', methods=['GET','POST'])
 def logout():
-    # This is the url to which the query is made
-    url = "https://auth.banner20.hasura-app.io/v1/user/logout"
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
+    if js and 'data' in js and 'auth_token' in js['data']:
 
-    # This is the json payload for the query
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
+        # This is the url to which the query is made
+        url = "https://auth.banner20.hasura-app.io/v1/user/logout"
 
-    # Make the query and store response in resp
-    resp = requests.request("POST", url, headers=headers)
+        # This is the json payload for the query
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-    # resp.content contains the json response.
-    print(resp.content)
-    return resp.content
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, headers=headers)
+
+        # resp.content contains the json response.
+        print(resp.content)
+        return resp.content
+    else:
+        return jsonify({'error':'no session information found'})
+
 
 def allowed_file(filename):
     return '.' in filename and \
