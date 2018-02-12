@@ -412,9 +412,16 @@ def logout():
         # Make the query and store response in resp
         resp = requests.request("POST", url, headers=headers)
 
+        response = make_response(resp.content)
+        response.set_cookie('auth_token','None')
+        response.set_cookie('username','None')
+        response.set_cookie('hasura_id','None')
+        response.set_cookie('hasura_roles','None')
+
+
         # resp.content contains the json response.
         print(resp.content)
-        return resp.content
+        return response
     else:
         return jsonify({'error':'no session information found'})
 
