@@ -402,8 +402,8 @@ def logout():
         # This is the json payload for the query
         # Setting headers
         headers = {
-            "Content-Type": "application/json"
-            "Authorization": 'Bearer ' + auth_token
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + auth_token
         }
 
         # Make the query and store response in resp
