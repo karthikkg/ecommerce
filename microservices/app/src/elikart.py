@@ -371,8 +371,10 @@ def login():
         #json_obj = json.loads(string)
         #print(json_obj)
         #session_tokens = json_obj
-
         session_tokens = resp.content.decode('utf8')
+        session_tokens = literal_eval(session_tokens)[0]
+
+        
         for i in session_tokens:
             session[i] = session_tokens[i]
 
