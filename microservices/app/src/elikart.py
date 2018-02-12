@@ -365,14 +365,14 @@ def login():
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        respo = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
         #response = make_response(render_template('index.html'))
         #string = resp.content.decode('utf-8')
         #json_obj = json.loads(string)
         #print(json_obj)
         #session_tokens = json_obj
         user_info= {}
-        session_tokens = resp.content.decode('utf8')
+        session_tokens = respo.content.decode('utf8')
         session_tokens = literal_eval(session_tokens)
         for i in session_tokens:
             user_info[i] = session_tokens[i]
@@ -384,7 +384,7 @@ def login():
         
         # resp.content contains the json response.
         #print(resp.content)
-        if resp.json():
+        if respo.json():
             return resp
         else:
             return jsonify({"error":"Invalid Email/Password"})
