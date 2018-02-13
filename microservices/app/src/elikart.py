@@ -371,7 +371,7 @@ def login():
         #json_obj = json.loads(string)
         #print(json_obj)
         #session_tokens = json_obj
-        if "auth_token"  in respo.content:
+        if b"auth_token"  in respo.content:
             user_info= {}
             session_tokens = respo.content.decode('utf8')
             print("\n\nrespo.content.decode('utf8')\n",session_tokens)
