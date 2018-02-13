@@ -371,7 +371,7 @@ def login():
         #json_obj = json.loads(string)
         #print(json_obj)
         #session_tokens = json_obj
-        if respo.json():
+        if "auth_token"  in respo.content:
             user_info= {}
             session_tokens = respo.content.decode('utf8')
             print("\n\nrespo.content.decode('utf8')\n",session_tokens)
@@ -389,7 +389,7 @@ def login():
         #print(resp.content)
             return resp
         else:
-            return jsonify({"error":"Invalid Email/Password"})
+            return jsonify({"error":"Invalid credentials"})
     else:
         return jsonify({'error':'please enter all the required fields '})
     
