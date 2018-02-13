@@ -371,22 +371,22 @@ def login():
         #json_obj = json.loads(string)
         #print(json_obj)
         #session_tokens = json_obj
-        user_info= {}
-        session_tokens = respo.content.decode('utf8')
-        print("\n\nrespo.content.decode('utf8')\n",session_tokens)
-        session_tokens = literal_eval(session_tokens)
-        print("\n\nsession_tokens\n",session_tokens)
-        for i in session_tokens:
-            user_info[i] = session_tokens[i]
-        user_details = json.dumps(user_info)
+        if respo.json():
+            user_info= {}
+            session_tokens = respo.content.decode('utf8')
+            print("\n\nrespo.content.decode('utf8')\n",session_tokens)
+            session_tokens = literal_eval(session_tokens)
+            print("\n\nsession_tokens\n",session_tokens)
+            for i in session_tokens:
+                user_info[i] = session_tokens[i]
+            user_details = json.dumps(user_info)
 
-        resp = make_response(user_details)
-        for i in user_info:
-            resp.set_cookie(i, str(user_info[i]))
+            resp = make_response(user_details)
+            for i in user_info:
+                resp.set_cookie(i, str(user_info[i]))
         
         # resp.content contains the json response.
         #print(resp.content)
-        if respo.json():
             return resp
         else:
             return jsonify({"error":"Invalid Email/Password"})
