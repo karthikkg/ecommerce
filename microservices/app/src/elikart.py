@@ -464,8 +464,6 @@ def add_product():
     print("request data: ",request.form)
     print('\n\n auth token: \n',auth_token)
     hasura_id = request.cookies.get('hasura_id')
-    if js and 'data' in js:
-        print(js['data'])
     if auth_token and request.method == "POST":
         #auth_token=js['data']['auth_token']
         #hasura_id= js['data']['hasura_id']
