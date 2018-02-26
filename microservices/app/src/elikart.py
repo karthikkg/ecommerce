@@ -463,7 +463,7 @@ def add_product():
     auth_token = request.cookies.get('auth_token')
     print('\n\n auth token: \n',auth_token)
     hasura_id = request.cookies.get('hasura_id')
-    if js and 'data' in:
+    if js and 'data' in js:
         print(js['data'])
     if auth_token and js and 'data' in js:
         #auth_token=js['data']['auth_token']
