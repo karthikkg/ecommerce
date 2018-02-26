@@ -460,9 +460,11 @@ def getPhoto_url(file):
 def add_product():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if js and 'data' in js and 'auth_token' in js['data']:
-        auth_token=js['data']['auth_token']
-        hasura_id= js['data']['hasura_id']
+    auth_token = request.cookies.get('auth_token')
+    hasura_id = request.cookies.get('hasura_id')
+    if auth_token and js and 'data' in js:
+        #auth_token=js['data']['auth_token']
+        #hasura_id= js['data']['hasura_id']
         print(hasura_id)
         print('entered first if\n',hasura_id)
 
@@ -541,7 +543,7 @@ def add_product():
 
 
             #return url + '/'+ str(resp.content.decode())
-        #return False
+        return jsonify({'error':'The file type is not allowed'})
 
         # This is the json payload for the query
         
@@ -612,12 +614,12 @@ def add_product():
 
         # resp.content contains the json response.
         print(resp.content)
-        flash('Successfully added product\n'+'product_id: '+str(product_id)+'\nimage_url: '+image_url)
-        return render_template('addphoto.html')
+        success_msg = 'Successfully added product\n'+'product_id: '+str(product_id)+'\nimage_url: '+image_url
+        return jsonify({'error': success_msg})
 
         #else:
          #   return "you are not authorised to add"
-    return render_template('addphoto.html')
+    return jsonify({'error':'you are not authorised to add'})
 
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
