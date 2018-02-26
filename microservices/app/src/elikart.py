@@ -508,6 +508,8 @@ def add_product():
         #print('category:\n',category)
         price = request.form['price']
         description = request.form['description']
+        print("description: \n", description)
+
         #print(description)
         file = request.files['filename']
         print(file)
