@@ -506,10 +506,10 @@ def add_product():
         print('enetered post\n')
         product_name = js['data']['product_name']
         sub_category = js['data']['category']
-        #print('category:\n',category)
+        print('category:\n',category)
         price = js['data']['price']
         description = js['data']['description']
-        #print(description)
+        print('description:\n',description)
         file = request.files['filename']
         #print(file)
         # This is the url to which the query is made
