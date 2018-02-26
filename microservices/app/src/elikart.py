@@ -458,13 +458,14 @@ def getPhoto_url(file):
 
 @elikart.route('/add_product',methods=['GET','POST'])
 def add_product():
-    #content = request.get_json()
-    #js = json.loads(json.dumps(content))
+    content = request.get_json()
+    js = json.loads(json.dumps(content))
     auth_token = request.cookies.get('auth_token')
-    print("request data: ",request.form)
     print('\n\n auth token: \n',auth_token)
     hasura_id = request.cookies.get('hasura_id')
-    if auth_token and request.method == "POST":
+    if js and 'data' in js:
+        print(js['data'])
+    if auth_token and js and 'data' in js:
         #auth_token=js['data']['auth_token']
         #hasura_id= js['data']['hasura_id']
         print(hasura_id)
@@ -503,16 +504,14 @@ def add_product():
         print(resp.content)
         #if 'seller_id' in resp :
         print('enetered post\n')
-        product_name = request.form['product_name']
-        sub_category = request.form['category']
+        product_name = js['data']['product_name']
+        sub_category = js['data']['category']
         #print('category:\n',category)
-        price = request.form['price']
-        description = request.form['description']
-        print("description: \n", description)
-
+        price = js['data']['price']
+        description = js['data']['description']
         #print(description)
         file = request.files['filename']
-        print(file)
+        #print(file)
         # This is the url to which the query is made
         # This is the json payload for the query
         
