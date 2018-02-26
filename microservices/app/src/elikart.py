@@ -506,11 +506,11 @@ def add_product():
         print('enetered post\n')
         product_name = js['data']['product_name']
         sub_category = js['data']['category']
-        print('category:\n',category)
+        print('category:\n',sub_category)
         price = js['data']['price']
         description = js['data']['description']
         print('description:\n',description)
-        file = request.files['filename']
+        file = js['data']['file']['_parts'][0][1]['uri']
         #print(file)
         # This is the url to which the query is made
         # This is the json payload for the query
