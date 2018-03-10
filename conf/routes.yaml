@@ -161,17 +161,6 @@ notify:
     corsPolicy: allow_all
 
 # expose flask microserivce at a subdomain
-react-native:
-  /:
-    corsPolicy: allow_all
-    upstreamService:
-      name: react-native
-      namespace: '{{ cluster.metadata.namespaces.user }}'
-    upstreamServicePath: /
-    upstreamServicePort: 80
-
-
-
 
 ui:
   /:
@@ -181,15 +170,14 @@ ui:
       namespace: '{{ cluster.metadata.namespaces.user }}'
     upstreamServicePath: /
     upstreamServicePort: 80
-
-
-app:
+    
+react-native:
   /:
+    corsPolicy: allow_all
     upstreamService:
-      name: app
+      name: react-native
       namespace: '{{ cluster.metadata.namespaces.user }}'
     upstreamServicePath: /
     upstreamServicePort: 80
-    corsPolicy: allow_all
 
 
