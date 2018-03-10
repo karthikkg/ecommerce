@@ -178,6 +178,7 @@ ui:
       namespace: '{{ cluster.metadata.namespaces.user }}'
     upstreamServicePath: /
     upstreamServicePort: 80
+    
 react-native:
   /:
     corsPolicy: allow_all
