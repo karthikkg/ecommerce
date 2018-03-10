@@ -1,17 +1,11 @@
-FROM node:8
+FROM mhart/alpine-node:7.6.0
 
-RUN apt-get update && apt-get install -y build-essential python
+WORKDIR /src
 
-#Install deps
-RUN mkdir /app
-COPY app/package.json /app/package.json
-RUN cd /app && npm install
-RUN npm -g install serve
+# Add app source files
+ADD src /src
 
-#Add all source code
-ADD app /app/
-RUN cd /app && npm run build
+#install node modules
+RUN npm install
 
-WORKDIR /app
-
-
+CMD ["node", "server.js"]
