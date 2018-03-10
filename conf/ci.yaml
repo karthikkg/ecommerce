@@ -32,9 +32,3 @@ remotes:
         dockerfile: microservices/ui/Dockerfile
         path: microservices/ui
 
-
-    '{{ cluster.metadata.namespaces.user }}.react-native':
-      react-native:
-        dockerfile: microservices/react-native/Dockerfile
-        path: microservices/react-native
-
