@@ -339,8 +339,8 @@ def login():
     print(content)
     js = json.loads(json.dumps(content))
     print(js)
-    if js and 'data' in js and 'email' in js['data'] and 'password' in js['password']:
 
+    if js and 'data' in js and 'email' in js['data'] and 'password' in js['data']:
         print("\n\n\nprint \n entered form correctly\n \n")
         email = js['data']['email']
         password = js['data']['password']
@@ -365,47 +365,68 @@ def login():
         }
 
         # Make the query and store response in resp
-        resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+        respo = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
         #response = make_response(render_template('index.html'))
         #string = resp.content.decode('utf-8')
         #json_obj = json.loads(string)
         #print(json_obj)
         #session_tokens = json_obj
+        if b"auth_token"  in respo.content:
+            user_info= {}
+            session_tokens = respo.content.decode('utf8')
+            print("\n\nrespo.content.decode('utf8')\n",session_tokens)
+            session_tokens = literal_eval(session_tokens)
+            print("\n\nsession_tokens\n",session_tokens)
+            for i in session_tokens:
+                user_info[i] = session_tokens[i]
+            user_details = json.dumps(user_info)
 
-        #session_tokens = resp.content.decode('utf8')
-        #for i in session_tokens:
-            #session[i] = session_tokens[i]
-
-
-        #response.set_cookie('age', b'26')
+            resp = make_response(user_details)
+            for i in user_info:
+                resp.set_cookie(i, str(user_info[i]))
+        
         # resp.content contains the json response.
         #print(resp.content)
-        if resp.json():
-            return resp.content
+            return resp
         else:
-            return jsonify({"error":"Invalid Email/Password"})
+            return jsonify({"error":"Invalid credentials"})
     else:
-        return jsonify({'error':'please enter all the fields required'})
+        return jsonify({'error':'please enter all the required fields '})
     
 
 
 @elikart.route('/logout', methods=['GET','POST'])
 def logout():
-    # This is the url to which the query is made
-    url = "https://auth.banner20.hasura-app.io/v1/user/logout"
+    auth_token=request.cookies.get('auth_token')
+    if auth_token:
 
-    # This is the json payload for the query
-    # Setting headers
-    headers = {
-        "Content-Type": "application/json"
-    }
+        # This is the url to which the query is made
+        url = "https://auth.banner20.hasura-app.io/v1/user/logout"
 
-    # Make the query and store response in resp
-    resp = requests.request("POST", url, headers=headers)
+        # This is the json payload for the query
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ' + auth_token
 
-    # resp.content contains the json response.
-    print(resp.content)
-    return resp.content
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", url, headers=headers)
+
+        response = make_response(resp.content)
+        response.set_cookie('auth_token','None')
+        response.set_cookie('username','None')
+        response.set_cookie('hasura_id','None')
+        response.set_cookie('hasura_roles','None')
+
+
+        # resp.content contains the json response.
+        print(resp.content)
+        return response
+    else:
+        return jsonify({'error':'no session information found'})
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -439,9 +460,14 @@ def getPhoto_url(file):
 def add_product():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if js and 'data' in js and 'auth_token' in js['data']:
-        auth_token=js['data']['auth_token']
-        hasura_id= js['data']['hasura_id']
+    auth_token = request.cookies.get('auth_token')
+    print('\n\n auth token: \n',auth_token)
+    hasura_id = request.cookies.get('hasura_id')
+    if js and 'data' in js:
+        print(js['data'])
+    if auth_token :
+        #auth_token=js['data']['auth_token']
+        #hasura_id= js['data']['hasura_id']
         print(hasura_id)
         print('entered first if\n',hasura_id)
 
@@ -478,13 +504,14 @@ def add_product():
         print(resp.content)
         #if 'seller_id' in resp :
         print('enetered post\n')
-        product_name = js['data']['product_name']
-        sub_category = js['data']['category']
-        #print('category:\n',category)
-        price = js['data']['price']
-        description = js['data']['description']
-        #print(description)
+        product_name = request.form['product_name']
+        sub_category = request.form['category']
+        print('category:\n',sub_category)
+        price = request.form['price']
+        description = request.form['description']
+        print('description:\n',description)
         file = request.files['filename']
+        #file = js['data']['file']['_parts'][0][1]['uri']
         #print(file)
         # This is the url to which the query is made
         # This is the json payload for the query
@@ -520,7 +547,7 @@ def add_product():
 
 
             #return url + '/'+ str(resp.content.decode())
-        #return False
+        return jsonify({'error':'The file type is not allowed'})
 
         # This is the json payload for the query
         
@@ -591,12 +618,12 @@ def add_product():
 
         # resp.content contains the json response.
         print(resp.content)
-        flash('Successfully added product\n'+'product_id: '+str(product_id)+'\nimage_url: '+image_url)
-        return render_template('addphoto.html')
+        success_msg = 'Successfully added product\n'+'product_id: '+str(product_id)+'\nimage_url: '+image_url
+        return jsonify({'error': success_msg})
 
         #else:
          #   return "you are not authorised to add"
-    return render_template('addphoto.html')
+    return jsonify({'error':'you are not authorised to add'})
 
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
