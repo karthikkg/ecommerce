@@ -14,5 +14,4 @@ RUN cd /app && npm run build
 
 WORKDIR /app
 
-#Default command
-CMD ["serve", "-s", "build", "-p", "8080"]
+
