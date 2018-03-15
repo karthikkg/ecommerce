@@ -630,34 +630,34 @@ def add_product():
 # url example : https://app.banner20.hasura-app.io/product_info?product_id=2
 @elikart.route("/product_info")
 def complete_product_info():
-        product_id = request.args.get("product_id")
-        requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "complete_product_info",
-                "columns": [
-                    "*"
-                ],
-                "where": {
-                    "product_id": {
-                        "$eq": product_id
-                    }
+    product_id = request.args.get("product_id")
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "complete_product_info",
+            "columns": [
+                "*"
+            ],
+            "where": {
+                "product_id": {
+                    "$eq": product_id
                 }
             }
         }
+    }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
-        # resp.content contains the json response.
-        product_information = resp.content.decode('utf-8')
-        product_information = literal_eval(product_information)
-        return jsonify(product_information)
+    # resp.content contains the json response.
+    product_information = resp.content.decode('utf-8')
+    product_information = literal_eval(product_information)
+    return jsonify(product_information)
 
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product_images?product_id=2
@@ -679,90 +679,90 @@ def product_images():
                 }
             }
 
-            # Setting headers
-            headers = {
-                "Content-Type": "application/json"
-            }
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-            # Make the query and store response in resp
-            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
-            # resp.content contains the json response.
-            images = resp.content.decode('utf-8')
-            images = literal_eval(images)
-            #images = resp.content
-           
-            return jsonify(images)
+    # resp.content contains the json response.
+    images = resp.content.decode('utf-8')
+    images = literal_eval(images)
+    #images = resp.content
+   
+    return jsonify(images)
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
 @elikart.route("/product_info")
 def product_info():
-        product_id = request.args.get("product_id")
-        requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "complete_product_info",
-                "columns": [
-                    "*"
-                ],
-                "where": {
-                    "product_id": {
-                        "$eq": product_id
-                    }
+    product_id = request.args.get("product_id")
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "complete_product_info",
+            "columns": [
+                "*"
+            ],
+            "where": {
+                "product_id": {
+                    "$eq": product_id
                 }
             }
         }
+    }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
-        # resp.content contains the json response.
-        product_information = resp.content.decode('utf-8')
-        product_information = literal_eval(product_information)
-        
+    # resp.content contains the json response.
+    product_information = resp.content.decode('utf-8')
+    product_information = literal_eval(product_information)
+    
 
-        # This is the json payload for the query
-        requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "product_image",
-                "columns": [
-                    "url"
-                ],
-                "where": {
-                    "product_id": {
-                        "$eq": product_id
-                    }
+    # This is the json payload for the query
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "product_image",
+            "columns": [
+                "url"
+            ],
+            "where": {
+                "product_id": {
+                    "$eq": product_id
                 }
             }
         }
+    }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+    # Make the query and store response in resp
+    resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
-        # resp.content contains the json response.
-        images = resp.content.decode('utf-8')
-        images = literal_eval(images)
-        #images = resp.content
-        images_count = len(images)
-        for i in range(images_count):
-            image_name = 'product_image'+'_'+str(i)
-            if not product_information[0]['product_image'] == images[i]['url']:
-                product_information[0][image_name] = images[i]['url']
+    # resp.content contains the json response.
+    images = resp.content.decode('utf-8')
+    images = literal_eval(images)
+    #images = resp.content
+    images_count = len(images)
+    for i in range(images_count):
+        image_name = 'product_image'+'_'+str(i)
+        if not product_information[0]['product_image'] == images[i]['url']:
+            product_information[0][image_name] = images[i]['url']
 
 
 
-        return jsonify(product_information)
+    return jsonify(product_information)
 
 # Display products by sub category id
 # url example : https://app.banner20.hasura-app.io/displaybysubcategory?sub_category_id=1
