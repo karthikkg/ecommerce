@@ -662,39 +662,40 @@ def complete_product_info():
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product_images?product_id=2
 @elikart.route("/product_images")
-def product_images()
-requestPayload = {
-            "type": "select",
-            "args": {
-                "table": "product_image",
-                "columns": [
-                    "url"
-                ],
-                "where": {
-                    "product_id": {
-                        "$eq": product_id
+def product_images():
+
+    requestPayload = {
+                "type": "select",
+                "args": {
+                    "table": "product_image",
+                    "columns": [
+                        "url"
+                    ],
+                    "where": {
+                        "product_id": {
+                            "$eq": product_id
+                        }
                     }
                 }
             }
-        }
 
-        # Setting headers
-        headers = {
-            "Content-Type": "application/json"
-        }
+            # Setting headers
+            headers = {
+                "Content-Type": "application/json"
+            }
 
-        # Make the query and store response in resp
-        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+            # Make the query and store response in resp
+            resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
 
-        # resp.content contains the json response.
-        images = resp.content.decode('utf-8')
-        images = literal_eval(images)
-        #images = resp.content
-       
-        return jsonify(images)
+            # resp.content contains the json response.
+            images = resp.content.decode('utf-8')
+            images = literal_eval(images)
+            #images = resp.content
+           
+            return jsonify(images)
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
-@elikart.route("/product")
+@elikart.route("/product_info")
 def product_info():
         product_id = request.args.get("product_id")
         requestPayload = {
