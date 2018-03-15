@@ -625,6 +625,73 @@ def add_product():
          #   return "you are not authorised to add"
     return jsonify({'error':'you are not authorised to add'})
 
+
+# Display product info by product id
+# url example : https://app.banner20.hasura-app.io/product_info?product_id=2
+@elikart.route("/product_info")
+def complete_product_info():
+        product_id = request.args.get("product_id")
+        requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "complete_product_info",
+                "columns": [
+                    "*"
+                ],
+                "where": {
+                    "product_id": {
+                        "$eq": product_id
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        product_information = resp.content.decode('utf-8')
+        product_information = literal_eval(product_information)
+        return jsonify(product_information)
+
+# Display product info by product id
+# url example : https://app.banner20.hasura-app.io/product_images?product_id=2
+@elikart.route("/product_images")
+def product_images()
+requestPayload = {
+            "type": "select",
+            "args": {
+                "table": "product_image",
+                "columns": [
+                    "url"
+                ],
+                "where": {
+                    "product_id": {
+                        "$eq": product_id
+                    }
+                }
+            }
+        }
+
+        # Setting headers
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Make the query and store response in resp
+        resp = requests.request("POST", dataUrl, data=json.dumps(requestPayload), headers=headers)
+
+        # resp.content contains the json response.
+        images = resp.content.decode('utf-8')
+        images = literal_eval(images)
+        #images = resp.content
+       
+        return jsonify(images)
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
 @elikart.route("/product")
