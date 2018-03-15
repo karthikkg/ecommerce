@@ -695,7 +695,7 @@ def product_images():
     return jsonify(images)
 # Display product info by product id
 # url example : https://app.banner20.hasura-app.io/product?product_id=2
-@elikart.route("/product_info")
+@elikart.route("/product")
 def product_info():
     product_id = request.args.get("product_id")
     requestPayload = {
