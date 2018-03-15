@@ -663,7 +663,7 @@ def complete_product_info():
 # url example : https://app.banner20.hasura-app.io/product_images?product_id=2
 @elikart.route("/product_images")
 def product_images():
-
+    product_id = request.args.get("product_id")
     requestPayload = {
                 "type": "select",
                 "args": {
