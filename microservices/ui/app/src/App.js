@@ -1,36 +1,32 @@
 import React, { Component } from 'react';
 import { Switch, Route} from 'react-router-dom';
-import Reboot from 'material-ui/Reboot';
-import 'typeface-roboto';
-import { MuiThemeProvider } from 'material-ui/styles';
-import './App.css';
+
+
+
+import Home from './components/home.js';
+import Login from './components/login.js';
+import Header from './components/header.js';
+import AddProduct from './components/addProduct.js';
+import Search from './components/search.js';
+import Logout from './components/logout.js';
 import Product from './components/product';
-import Cart from './components/cart';
-import Header from './components/header';
-import Footer from './components/footer';
-import Home from './components/home';
-import User from './components/user';
-import Auth from './components/auth';
-import Login_Signup from './components/Login_Signup.js';
-import LogoutRedirec from './components/logoutRedirec';
+import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-          <MuiThemeProvider>
-              <Reboot />
               <Header/>
                  <Switch>
                       <Route exact path="/" component={Home}/>
-                      <Route path="/cart" component={Cart}/>
-                      <Route path="/user" component={User}/>
-                      <Route path="/auth" component={Login_Signup}/>
+                      <Route exact path="/search" component={Search}/>
+                      <Route path="/addProduct" component={AddProduct}/>
+                      <Route path="/login" component={Login}/>
                       <Route path="/product/:productId" component={Product}/>
-                      <Route path="/logoutRedirec" component={LogoutRedirec}/>
+                      
+                      
                 </Switch>
-                <Footer/>
-            </MuiThemeProvider>
+            
       </div>        
     );
   }

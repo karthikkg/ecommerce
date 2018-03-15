@@ -1,13 +1,5 @@
-import React from 'react';
-import Paper from 'material-ui/Paper';
-import Qh from './Qh.png';
-import QhBig from './QhBig.png';
-import QhGreen from './QhGreen.png';
-import QhgreenBig from './QhgreenBig.png';
-import '../App.css';
-import Button from 'material-ui/Button';
-import Hidden from 'material-ui/Hidden/Hidden';
-
+import React, {Component} from 'react';
+import fetch from 'isomorphic-fetch';
 
 class Product extends React.Component {
   constructor(props) {
@@ -43,108 +35,112 @@ class Product extends React.Component {
         this.state.product.map((p, i)=>this.setState({productVariableImage:p.product_image, 
                                                       productImage1:p.product_image_1,
                                                       productImage2:p.product_image_2,
-                                                      productImage3:p.product_image_3}));
+                                                      productImage3:p.product_image_3,
+                                                      category_name:p.category_name,
+                                                      productName:p.product_name,
+                                                      sub_category_name:p.sub_category_name,
+                                                      price:p.price,
+                                                      product_description:p.product_description,
+                                                      seller_name:p.seller_name,
+
+                                                    }));
       });
   }
   componentDidMount() {
     this.loadData();
   }
-  render() {
-    return (
-      <div>
+  render(){
+        return(
+        <div className="container-fluid">
         {
           this.state.product.map((p, i) =>
-          
-          //Primary Image Loading
-        <div className="row">
-          <div className="col l3">
-            <div className="row">
-              <div className="col s4">
-                <Paper zDepth={1}  >
-                  <div>
-                    <img style={{maxWidth:50+'px', height:50+'px',overflow:Hidden}} onClick={this.handleImage1} src={p.product_image_1} alt={p.product_name} />
-                  </div>
-                </Paper>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s4">
-                <Paper zDepth={1}  >
-                  <div>
-                    <img style={{maxWidth:50+'px', height:50+'px',overflow:Hidden}}  onClick={this.handleImage2} src={p.product_image_2} alt={p.product_name} />
-                  </div>
-                </Paper>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s4">
-                <Paper zDepth={1}  >
-                  <div>
-                    <img style={{maxWidth:50+'px', height:50+'px',overflow:Hidden}}  onClick={this.handleImage3} src={p.product_image_3} alt={p.product_name} />
-                  </div>
-                </Paper>
-              </div>
-            </div>
-          </div>
-          <div className="col l5">
-            <Paper >
-              <div>
-                <img style={{maxWidth:250+'px', height:450+'px',overflow:Hidden}} src={this.state.productVariableImage} />
-              </div>
-            </Paper>
-          </div>
+            
 
-          <div className="col l4">
-            <div>
-              <Paper zDepth={0}>
-                <div>
-                  <div>
-                    <p className="ProductdescriptionText">
-                      {p.product_name}
-                    </p>
-                  </div>
-                  <div>
-                    <p>MRP:{p.price}</p>
+          <ImageCar image1={this.state.productVariableImage} image2={this.state.productImage1} 
+            image3={this.state.productImage2} productName={p.product_name}
+            price={p.price}
+            description={p.product_description} category_name={p.category_name} seller_name={p.seller_name}
+            sub_category_name={p.sub_category_name}
 
-                  </div>
-                  <div className="row">
-                    <div className="col s6">
-                      <input placeholder="pincode" type="text" class="validate" />
-                    </div>
-                    <div className="col s6">
-                      <Button raised >Check</Button>
-
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div className="row">
-                  <div className="col s6">
-                    <Button raised >Add To Cart</Button >
-                  </div>
-                  <div className="col s6">
-                    <Button raised className="blackText">Buy Now</Button>
-
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col s12">
-                    <Paper zDepth={0}>
-                      <p className="ProductdescriptionText">Details</p>
-                     <p>{p.product_description}</p>
-                    </Paper>
-                  </div>
-                </div>
-              </Paper>
-            </div>
-          </div>
-        </div>
-        )
-        }        
-      </div>
-    )
+            />)}
+        </div>);
   }
 }
+
+class ImageCar extends Component{
+  render(){
+    return(
+      <div>
+      
+      <div className='row' style={{'marginTop':'30px'}}>
+      <div className='col-md-4 card' style={{'marginTop':'30px'}}>
+        <div id="demo" className="carousel slide" data-ride="carousel">
+          
+
+
+        <div className="carousel-inner">
+          <div className="carousel-item  active">
+            <img src={this.props.image1} alt={this.props.productName}  height="288px"/>
+          </div>
+          <div className="carousel-item" >
+            <img src={this.props.image2} alt={this.props.productName} height="288px"/>
+          </div>
+          <div className="carousel-item">
+            <img src={this.props.image3} alt={this.props.productName}  height="288px"/>
+          </div>
+        </div>
+
+
+          <a className="carousel-control-prev" href="#demo" data-slide="prev">
+            <span className="carousel-control-prev-icon"></span>
+          </a>
+          <a className="carousel-control-next" href="#demo" data-slide="next">
+            <span className="carousel-control-next-icon"></span>
+          </a>
+        </div>
+
+        <div className='row'>
+            
+              <div className='col-md-4 card' data-target="#demo" data-slide-to="0" >
+                <img src={this.props.image1} alt={this.props.productName}  style={{"maxHeight":"150px",'height':"inherit"}}/>
+              </div>
+              <div className='col-md-4 card'data-target="#demo" data-slide-to="1">
+                <img src={this.props.image2} alt={this.props.productName}  style={{"maxHeight":"150px",'height':"inherit"}}/>
+              </div>
+              <div className='col-md-4 card' data-target="#demo" data-slide-to="2">
+                <img src={this.props.image3} alt={this.props.productName}  style={{"maxHeight":"150px",'height':"inherit"}}/>
+              </div>
+
+        </div>
+
+
+        </div>
+
+        <div className='col' style={{'marginTop':'30px'}}>
+          <div className="card">
+            <div className="card-body">
+            <div style={{'color':'grey'}}>{this.props.category_name[0].toUpperCase() + this.props.category_name.substr(1)} &gt; 
+            {this.props.sub_category_name[0].toUpperCase() + this.props.sub_category_name.substr(1)} </div>
+            <div style={{'color':'grey'}}>Seller: {this.props.seller_name[0].toUpperCase() + this.props.seller_name.substr(1)}
+            </div>
+              <h4 className="card-title">{this.props.productName}</h4>
+              <p className="card-text"style={{'fontSize':'20px'}}>Price: &#8377;{this.props.price}</p>
+              <button type="button" class="btn">Add to Cart</button>
+              <div style={{'marginTop':'20px'}}>
+              <button type="button" class="btn btn-primary">Buy Now</button>
+              </div>
+              <p className="card-text" style={{'color':'black',textAlign:'left','marginTop':'20px'}}>{this.props.description}</p>
+              
+            </div>
+          </div>
+        </div>  
+      </div>
+
+      
+    </div>
+      );
+
+  }
+}
+
 export default Product;

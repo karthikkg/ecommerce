@@ -29,22 +29,48 @@
         font-size: 18px;
 
       }
-      .zoom:hover {
-        transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-      }
-
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>React App</title>
   </head>
   <body>
-
+    
+    <div class="row" style="margin: 10px;padding: 10px;background-color:steelBlue;text-align: center;">
+      <div class="col-md-4 ">
+          <a class="navbar-brand text-center" href="#"><img src="brandLogoElikart.png"> </a>
+      </div>
+  
+      <div class="col-md-4 ">    
+        <form class="form-inline" action="/action_page.php">
+          <input class="form-control" type="text" placeholder="Search">
+          <button class="btn btn-success" type="submit">Search</button>
+        </form>
+        
+      </div>
+      
+      <div class="col-md-4">
+        <ul class="navlist navbar-toggle">
+          <li>
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li>
+            <a class="nav-link" href="#">login and signup</a>
+          </li>
+          <li>
+            <a class="nav-link" href="#">cart</a>
+          </li>
+          <li>
+            <a class="nav-link" href="#">logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    
-      <div  id="root"></div>
-      
+    <div class="container">
+      <div id="root"></div>
+    </div>
     
     <!--
       This HTML file is a template.
