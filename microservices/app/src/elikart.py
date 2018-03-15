@@ -91,7 +91,7 @@ def get_users():
 def signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if js and 'data' in js:
+    if js and 'data' in js and 'email' in js['data'] and 'password' in js['password']:
         first_name = js['data']['first_name']#form.first_name.data 
         last_name =  js['data']['last_name']#form.last_name.data
         email = js['data']['email'] #form.email.data 
@@ -183,7 +183,7 @@ def signup():
 def seller_signup():
     content = request.get_json()
     js = json.loads(json.dumps(content))
-    if js and 'data' in js:
+    if js and 'data' in js and 'email' in js['data'] and 'password' in js['password']:
         first_name = js['data']['first_name']#form.first_name.data 
         last_name =  js['data']['last_name']#form.last_name.data
         email = js['data']['email'] #form.email.data 
@@ -1516,3 +1516,30 @@ def view_orders():
         # resp.content contains the json response.
         return resp.content
 
+@elikart.route('/offers')
+def offers():
+    url = "https://data.banner20.hasura-app.io/v1/query"
+
+    # This is the json payload for the query
+    requestPayload = {
+        "type": "select",
+        "args": {
+            "table": "offers",
+            "columns": [
+                "*"
+            ]
+        }
+    }
+
+    # Setting headers
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    # Make the query and store response in resp
+    resp = requests.request("POST", url, data=json.dumps(requestPayload), headers=headers)
+
+    # resp.content contains the json response.
+    string = resp.content.decode('utf-8')
+    offers_list = literal_eval(string)
+    return jsonify(offers_list)
